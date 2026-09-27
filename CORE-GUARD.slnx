@@ -46,6 +46,7 @@
   <Project Path="Unity.PlasticSCM.Editor.Assistant.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Unity.ProBuilder.KdTree.csproj" />
   <Project Path="Unity.ProBuilder.AddOns.Editor.csproj" />
   <Project Path="Unity.AI.Navigation.csproj" />
