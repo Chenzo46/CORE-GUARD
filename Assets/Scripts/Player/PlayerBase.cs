@@ -11,6 +11,7 @@ public class PlayerBase : MonoBehaviour
     [Header("Action Map")]
     [SerializeField] private InputActionAsset playerActionMap;
     [Header("Movement Variables")]
+    [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float counterMovement = 1f;
     [SerializeField] private float maxSpeed = 10f;
@@ -22,9 +23,6 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkRadius;
     [SerializeField] private Transform eyeLevelTransform;
-    [Header("Interactions")]
-    [SerializeField] private float checkDistance;
-    [SerializeField] private Transform holdAnchor;
     //Input Actions
     private InputActionMap moveActionMap;
     private InputAction moveAction;
@@ -35,6 +33,7 @@ public class PlayerBase : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 moveDir = new Vector3();
     private Vector2 lookDir;
+    private float yVelocity;
     private float rotateY;
     private float rotateX;
 
@@ -90,8 +89,6 @@ public class PlayerBase : MonoBehaviour
     {
         movementHorizontal();
         movementVertical();
-
-        _cc.SimpleMove(moveDir * moveSpeed);
     }
 
 
@@ -101,6 +98,8 @@ public class PlayerBase : MonoBehaviour
 
         moveInput = moveAction.ReadValue<Vector2>();
         moveDir = (transform.forward * moveInput.y + transform.right * moveInput.x) * airMoveSwitch;
+
+        _cc.Move(moveDir * moveSpeed * Time.deltaTime);
 
         //rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force); // Movement Force
         //rb.AddForce(new Vector3(-rb.linearVelocity.x, 0, -rb.linearVelocity.z) * counterMovement * airMoveSwitch * Time.fixedDeltaTime, ForceMode.Force); // Counter Force
@@ -114,21 +113,26 @@ public class PlayerBase : MonoBehaviour
 
     private void movementVertical()
     {
-        if (JumpAction.triggered && IsGrounded())
+        if (IsGrounded() && yVelocity <= 0)
         {
+            yVelocity = -2f;
+        }
+
+        if (JumpAction.WasPerformedThisFrame() && IsGrounded())
+        {
+            yVelocity = Mathf.Sqrt(jumpStrength * -2f * gravity);
             //rb.AddForce(transform.up * jumpStrength, ForceMode.Impulse);
+            Debug.Log("Jump Triggered");
         }
         else if (JumpAction.WasReleasedThisFrame() && !IsGrounded())
         {
+            yVelocity /= jumpCancelStrength;
             //rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * jumpCancelStrength, rb.linearVelocity.z);
         }
 
-        /*
-        if (IsGrounded() && rb.linearVelocity.y < 0)
-        {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        }
-        */
+        yVelocity += gravity * Time.deltaTime;
+
+        _cc.Move(Vector3.up * yVelocity * Time.deltaTime);
     }
 
     private void look()
