@@ -33,6 +33,8 @@ public class PlayerBase : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 moveDir = new Vector3();
     private Vector2 lookDir;
+
+    private Vector3 moveVelocity;
     private float yVelocity;
     private float rotateY;
     private float rotateX;
@@ -99,7 +101,11 @@ public class PlayerBase : MonoBehaviour
         moveInput = moveAction.ReadValue<Vector2>();
         moveDir = (transform.forward * moveInput.y + transform.right * moveInput.x) * airMoveSwitch;
 
-        _cc.Move(moveDir * moveSpeed * Time.deltaTime);
+        moveVelocity += moveDir * moveSpeed * Time.deltaTime;
+
+        moveVelocity += -moveVelocity * counterMovement * Time.deltaTime;
+
+        _cc.Move(moveVelocity * Time.deltaTime);
 
         //rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force); // Movement Force
         //rb.AddForce(new Vector3(-rb.linearVelocity.x, 0, -rb.linearVelocity.z) * counterMovement * airMoveSwitch * Time.fixedDeltaTime, ForceMode.Force); // Counter Force
@@ -124,7 +130,7 @@ public class PlayerBase : MonoBehaviour
             //rb.AddForce(transform.up * jumpStrength, ForceMode.Impulse);
             Debug.Log("Jump Triggered");
         }
-        else if (JumpAction.WasReleasedThisFrame() && !IsGrounded())
+        else if (JumpAction.WasReleasedThisFrame() && !IsGrounded() && yVelocity > 0)
         {
             yVelocity /= jumpCancelStrength;
             //rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * jumpCancelStrength, rb.linearVelocity.z);
