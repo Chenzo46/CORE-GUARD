@@ -177,7 +177,7 @@ public class PlayerBase : MonoBehaviour
         {
             IInteractable interactable = hit.collider.transform.GetComponent<IInteractable>();
 
-            Debug.Log($"{interactable.GetContext()}");
+            GUIManager.Singleton.SetInteractableContext(interactable.GetContext());
 
             if (interactAction.WasPressedThisFrame())
             {
@@ -187,6 +187,7 @@ public class PlayerBase : MonoBehaviour
         else
         {
             //set GUI
+            GUIManager.Singleton.SetInteractableContext(string.Empty);
         }
     }
 
