@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
-    public Action<Transform> interactAction;
+    public Action<PlayerBase> interactAction;
 
     [SerializeField] private string context = "Interactable Object";
 
@@ -12,18 +12,24 @@ public class Interactable : MonoBehaviour, IInteractable
         interactAction += InteractFunction;
     }
 
-    public virtual void InteractFunction(Transform sender)
+    public virtual void InteractFunction(PlayerBase sender)
     {
         Debug.Log($"{context} interaction started");
     }
 
-    public virtual void Interact(Transform sender)
+    public virtual void Interact(PlayerBase sender)
     {
         interactAction.Invoke(sender);
+    }
+
+    public virtual string GetContext()
+    {
+        return context;
     }
 }
 
 public interface IInteractable 
 {
-    public void Interact(Transform sender);
+    public void Interact(PlayerBase sender);
+    public string GetContext();
 }

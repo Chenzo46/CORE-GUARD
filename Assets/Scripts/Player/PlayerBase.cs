@@ -23,11 +23,15 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkRadius;
     [SerializeField] private Transform eyeLevelTransform;
+    [Header("Object Interaction")]
+    [SerializeField] private float interactDistance = 2f;
+    [SerializeField] private LayerMask interactableMask;
     //Input Actions
     private InputActionMap moveActionMap;
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction JumpAction;
+    private InputAction interactAction;
 
     //Movement Variables
     private Vector2 moveInput;
@@ -41,7 +45,9 @@ public class PlayerBase : MonoBehaviour
 
     //Singleton
     public static PlayerBase Singleton;
+
     //Item interaction
+    
 
     private void Awake()
     {
@@ -52,6 +58,7 @@ public class PlayerBase : MonoBehaviour
         moveAction = moveActionMap.FindAction("Move");
         lookAction = moveActionMap.FindAction("Look");
         JumpAction = moveActionMap.FindAction("Jump");
+        interactAction = moveActionMap.FindAction("Interact");
 
         rotateY = Camera.main.transform.eulerAngles.y;
         rotateX = Camera.main.transform.eulerAngles.x;
@@ -80,6 +87,7 @@ public class PlayerBase : MonoBehaviour
     private void Update()
     {
         movementWrapper();
+        LookingAtInteractable();
     }
 
     private void LateUpdate()
@@ -156,6 +164,31 @@ public class PlayerBase : MonoBehaviour
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, rotateY, transform.rotation.eulerAngles.z);
     }
 
+    private void LookingAtInteractable()
+    {
+        RaycastHit hit;
+
+        bool inView = Physics.Linecast(eyeLevelTransform.position, 
+            eyeLevelTransform.position + Camera.main.transform.forward * interactDistance,
+            out hit,
+            interactableMask);
+
+        if(inView)
+        {
+            IInteractable interactable = hit.collider.transform.GetComponent<IInteractable>();
+
+            Debug.Log($"{interactable.GetContext()}");
+
+            if (interactAction.WasPressedThisFrame())
+            {
+                interactable.Interact(this);
+            }
+        }
+        else
+        {
+            //set GUI
+        }
+    }
 
     private bool IsGrounded()
     {
