@@ -47,6 +47,8 @@ public class PlayerBase : MonoBehaviour
     public static PlayerBase Singleton;
 
     //Item interaction
+
+    private Item heldItem;
     
 
     private void Awake()
@@ -195,6 +197,11 @@ public class PlayerBase : MonoBehaviour
     {
         RaycastHit hitInfo;
         return Physics.SphereCast(checkPivot.position, checkRadius, -Vector3.up, out hitInfo, checkRadius, groundLayer);
+    }
+
+    public Vector3 GetItemPosition()
+    {
+        return Vector3.zero;
     }
 
     void OnDrawGizmos()
