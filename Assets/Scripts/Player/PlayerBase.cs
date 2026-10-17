@@ -5,9 +5,9 @@ using System;
 public class PlayerBase : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private Rigidbody rb;
     [SerializeField] private CharacterController _cc;
     [SerializeField] private Transform checkPivot;
+    [SerializeField] private Transform heldItemTransform;
     [Header("Action Map")]
     [SerializeField] private InputActionAsset playerActionMap;
     [Header("Movement Variables")]
@@ -22,6 +22,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private float jumpCancelStrength = 0.5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkRadius;
+    [SerializeField] private float handFollowStrength = 20f;
     [SerializeField] private Transform eyeLevelTransform;
     [Header("Object Interaction")]
     [SerializeField] private float interactDistance = 2f;
@@ -32,6 +33,7 @@ public class PlayerBase : MonoBehaviour
     private InputAction lookAction;
     private InputAction JumpAction;
     private InputAction interactAction;
+    private InputAction dropAction;
 
     //Movement Variables
     private Vector2 moveInput;
@@ -61,6 +63,7 @@ public class PlayerBase : MonoBehaviour
         lookAction = moveActionMap.FindAction("Look");
         JumpAction = moveActionMap.FindAction("Jump");
         interactAction = moveActionMap.FindAction("Interact");
+        dropAction = moveActionMap.FindAction("Drop");
 
         rotateY = Camera.main.transform.eulerAngles.y;
         rotateX = Camera.main.transform.eulerAngles.x;
@@ -69,27 +72,16 @@ public class PlayerBase : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
     }
-
-
-
-    private void OnEnable()
-    {
-        //setActionsEnabled(true);
-    }
-    private void OnDisable()
-    {
-        //setActionsEnabled(false);
-    }
-
    
     private void Start()
     {
-
+        heldItemTransform.parent = Camera.main.transform;
     }
     private void Update()
     {
         movementWrapper();
         LookingAtInteractable();
+        HeldItemBehavior();
     }
 
     private void LateUpdate()
@@ -116,15 +108,6 @@ public class PlayerBase : MonoBehaviour
         moveVelocity += -moveVelocity * counterMovement * Time.deltaTime;
 
         _cc.Move(moveVelocity * Time.deltaTime);
-
-        //rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force); // Movement Force
-        //rb.AddForce(new Vector3(-rb.linearVelocity.x, 0, -rb.linearVelocity.z) * counterMovement * airMoveSwitch * Time.fixedDeltaTime, ForceMode.Force); // Counter Force
-
-        // Clamp Horizontal and vertical speeds
-        //Vector3 horizontalClamp = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        //horizontalClamp = Vector3.ClampMagnitude(horizontalClamp, maxSpeed);
-        //Vector3 verticalClamp = Vector3.ClampMagnitude(Vector3.up * rb.linearVelocity.y, maxFallSpeed);
-        //rb.linearVelocity = horizontalClamp + verticalClamp;
     }
 
     private void movementVertical()
@@ -137,13 +120,11 @@ public class PlayerBase : MonoBehaviour
         if (JumpAction.WasPerformedThisFrame() && IsGrounded())
         {
             yVelocity = Mathf.Sqrt(jumpStrength * -2f * gravity);
-            //rb.AddForce(transform.up * jumpStrength, ForceMode.Impulse);
-            Debug.Log("Jump Triggered");
+            
         }
         else if (JumpAction.WasReleasedThisFrame() && !IsGrounded() && yVelocity > 0)
         {
             yVelocity /= jumpCancelStrength;
-            //rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * jumpCancelStrength, rb.linearVelocity.z);
         }
 
         yVelocity += gravity * Time.deltaTime;
@@ -157,8 +138,8 @@ public class PlayerBase : MonoBehaviour
 
         Camera.main.transform.position = eyeLevelTransform.position;
 
-        rotateX -= lookDir.y * lookSensitivity * Time.deltaTime;
-        rotateY += lookDir.x * lookSensitivity * Time.deltaTime;
+        rotateX -= lookDir.y * lookSensitivity;
+        rotateY += lookDir.x * lookSensitivity;
 
         rotateX = Mathf.Clamp(rotateX, -90f, 90f);
 
@@ -188,7 +169,6 @@ public class PlayerBase : MonoBehaviour
         }
         else
         {
-            //set GUI
             GUIManager.Singleton.SetInteractableContext(string.Empty);
         }
     }
@@ -199,9 +179,29 @@ public class PlayerBase : MonoBehaviour
         return Physics.SphereCast(checkPivot.position, checkRadius, -Vector3.up, out hitInfo, checkRadius, groundLayer);
     }
 
-    public Vector3 GetItemPosition()
+    public Transform GetHandTransform()
     {
-        return Vector3.zero;
+        return heldItemTransform;
+    }
+
+    public void SetHeldItem(Item it)
+    {
+        heldItem = it;
+    }
+
+    private void HeldItemBehavior()
+    {
+
+        if(heldItem == null)
+            return;
+
+        if(dropAction.WasPerformedThisFrame())
+            heldItem.Drop();
+    }
+
+    public Vector3 GetPlayerVelocity()
+    {
+        return moveVelocity + Vector3.up * yVelocity;
     }
 
     void OnDrawGizmos()

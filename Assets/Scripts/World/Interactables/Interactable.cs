@@ -12,6 +12,11 @@ public class Interactable : MonoBehaviour, IInteractable
         interactAction += InteractFunction;
     }
 
+    public virtual void OnDestroy()
+    {
+        interactAction -= InteractFunction;
+    }
+
     public virtual void InteractFunction(PlayerBase sender)
     {
         Debug.Log($"{context} interaction started");
@@ -26,10 +31,16 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         return context;
     }
+
+    public virtual void SetContext(string newContext)
+    {
+        context = newContext;
+    }
 }
 
 public interface IInteractable 
 {
     public void Interact(PlayerBase sender);
     public string GetContext();
+    public void SetContext(string newContext);
 }
