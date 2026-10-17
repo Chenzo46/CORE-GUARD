@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
     public Action<PlayerBase> interactAction;
+    public Action OnInteractComplete;
 
     [SerializeField] private string context = "Interactable Object";
     [SerializeField] private bool singleInteraction = false;
+    [SerializeField] private bool interactionEnabled = true;
     [SerializeField] private ItemConstraint itemConstraint;
 
     private bool singleComplete = false;
@@ -33,6 +36,7 @@ public class Interactable : MonoBehaviour, IInteractable
             singleComplete = singleInteraction ? true : false;
 
             interactAction.Invoke(sender);
+            OnInteractComplete?.Invoke();
         }
             
     }
@@ -49,11 +53,16 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private bool IsConstraintMet(PlayerBase sender)
     {
-        if (singleComplete)
+        if (singleComplete || !interactionEnabled)
             return false;
 
         Item heldItem = sender.GetHeldItem();
         return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType) || (!itemConstraint.constraintActive);
+    }
+
+    public void SetInteractionEnabled(bool enabled)
+    {
+        interactionEnabled = enabled;
     }
 }
 
