@@ -17,26 +17,12 @@ public class Item : Interactable
 
     private Vector3 dampRef;
 
-    private Action UseAction;
-    [SerializeField] private InputAction UseActionKeybind;
 
     public override void Awake()
     {
         base.Awake();
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<Collider>();
-    }
-
-    private void OnEnable()
-    {
-        UseActionKeybind.performed += UseActionInvoke;
-        UseAction += UseActionFunction;
-    }
-
-    private void OnDisable()
-    {
-        UseActionKeybind.performed -= UseActionInvoke;
-        UseAction -= UseActionFunction;
     }
 
     private void LateUpdate()
@@ -89,12 +75,6 @@ public class Item : Interactable
         Quaternion.Slerp(transform.rotation, player.GetHandTransform().rotation, handRotateStrength * Time.deltaTime));
     }
 
-    public virtual void UseActionInvoke(InputAction.CallbackContext context)
-    {
-        if(context.performed && isHeld)
-            UseAction?.Invoke();
-    }
-    
     public virtual void UseActionFunction()
     {
         Debug.Log($"{GetContext()} used");

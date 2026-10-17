@@ -1395,7 +1395,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1627,6 +1627,7 @@ MonoBehaviour:
   maxFallSpeed: 30
   airMoveFactor: 0.3
   lookSensitivity: 0.1
+  gamepadSensitivityScale: 2000
   jumpStrength: 2.5
   jumpCancelStrength: 2
   groundLayer:
@@ -2213,32 +2214,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
   context: ScrewDriver
-  UseActionKeybind:
-    m_Name: Use Action Keybind
-    m_Type: 0
-    m_ExpectedControlType: Button
-    m_Id: 5cee4e5e-c464-4f3e-9ca0-431d5ada4a0c
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 83c28705-79cf-4b57-88c7-a3c99a2359b7
-      m_Path: <Mouse>/leftButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Use Action Keybind
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 1fa850e8-368c-4ad2-9c7c-670533f6a4fe
-      m_Path: <Gamepad>/rightTrigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Use Action Keybind
-      m_Flags: 0
-    m_Flags: 0
-    m_Priority: 0
 --- !u!54 &890164247
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2670,7 +2645,7 @@ Transform:
   m_GameObject: {fileID: 1078800695}
   serializedVersion: 2
   m_LocalRotation: {x: -8.731147e-11, y: -0, z: 5.8207647e-11, w: 1}
-  m_LocalPosition: {x: -0.5281215, y: 0.56973696, z: 0.5556693}
+  m_LocalPosition: {x: -0.5281215, y: 0.56973696, z: 0.929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3293,7 +3268,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

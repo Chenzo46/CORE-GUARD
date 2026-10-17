@@ -18,6 +18,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private float maxFallSpeed = 30f;
     [SerializeField] private float airMoveFactor = 0.3f;
     [SerializeField] private float lookSensitivity;
+    [SerializeField] private float gamepadSensitivityScale = 100f;
     [SerializeField] private float jumpStrength;
     [SerializeField] private float jumpCancelStrength = 0.5f;
     [SerializeField] private LayerMask groundLayer;
@@ -34,6 +35,7 @@ public class PlayerBase : MonoBehaviour
     private InputAction JumpAction;
     private InputAction interactAction;
     private InputAction dropAction;
+    private InputAction useAction;
 
     //Movement Variables
     private Vector2 moveInput;
@@ -64,6 +66,7 @@ public class PlayerBase : MonoBehaviour
         JumpAction = moveActionMap.FindAction("Jump");
         interactAction = moveActionMap.FindAction("Interact");
         dropAction = moveActionMap.FindAction("Drop");
+        useAction = moveActionMap.FindAction("Use");
 
         rotateY = Camera.main.transform.eulerAngles.y;
         rotateX = Camera.main.transform.eulerAngles.x;
@@ -138,8 +141,16 @@ public class PlayerBase : MonoBehaviour
 
         Camera.main.transform.position = eyeLevelTransform.position;
 
-        rotateX -= lookDir.y * lookSensitivity;
-        rotateY += lookDir.x * lookSensitivity;
+        Vector2 delta;
+        InputDevice device = lookAction.activeControl?.device;
+
+        if (device is Gamepad)
+            delta = lookDir * lookSensitivity * gamepadSensitivityScale * Time.deltaTime;
+        else
+            delta = lookDir * lookSensitivity;
+
+        rotateX -= delta.y;
+        rotateY += delta.x;
 
         rotateX = Mathf.Clamp(rotateX, -90f, 90f);
 
@@ -196,7 +207,13 @@ public class PlayerBase : MonoBehaviour
             return;
 
         if(dropAction.WasPerformedThisFrame())
+        {
             heldItem.Drop();
+        }
+        else if (useAction.WasPerformedThisFrame())
+        {
+            heldItem.UseActionFunction();
+        }
     }
 
     public Vector3 GetPlayerVelocity()
