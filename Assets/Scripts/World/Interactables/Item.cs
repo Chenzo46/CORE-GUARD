@@ -32,6 +32,9 @@ public class Item : Interactable
 
     public override void InteractFunction(PlayerBase sender)
     {
+        if (sender.IsHoldingItem())
+            return;
+
         base.InteractFunction(sender);
 
         if (!isHeld)

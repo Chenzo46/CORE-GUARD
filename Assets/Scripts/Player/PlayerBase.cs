@@ -200,6 +200,11 @@ public class PlayerBase : MonoBehaviour
         heldItem = it;
     }
 
+    public bool IsHoldingItem()
+    {
+        return heldItem != null;
+    }   
+
     private void HeldItemBehavior()
     {
 
