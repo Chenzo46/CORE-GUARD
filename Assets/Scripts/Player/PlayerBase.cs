@@ -205,6 +205,11 @@ public class PlayerBase : MonoBehaviour
         return heldItem != null;
     }   
 
+    public Item GetHeldItem()
+    {
+        return heldItem;
+    }
+
     private void HeldItemBehavior()
     {
 

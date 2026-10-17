@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
@@ -16,6 +15,8 @@ public class Item : Interactable
     private const int WORLD_LAYER = 10;
 
     private Vector3 dampRef;
+
+    [SerializeField] private ItemType itemType = ItemType.None;
 
 
     public override void Awake()
@@ -83,4 +84,16 @@ public class Item : Interactable
         Debug.Log($"{GetContext()} used");
         // to be overriden by child classes
     }
+
+    public ItemType GetItemType()
+    {
+        return itemType;
+    }
+}
+
+public enum ItemType
+{
+    None,
+    Screwdriver,
+    Broom,
 }

@@ -6,6 +6,10 @@ public class Interactable : MonoBehaviour, IInteractable
     public Action<PlayerBase> interactAction;
 
     [SerializeField] private string context = "Interactable Object";
+    [SerializeField] private bool singleInteraction = false;
+    [SerializeField] private ItemConstraint itemConstraint;
+
+    private bool singleComplete = false;
 
     public virtual void Awake()
     {
@@ -24,7 +28,13 @@ public class Interactable : MonoBehaviour, IInteractable
 
     public virtual void Interact(PlayerBase sender)
     {
-        interactAction.Invoke(sender);
+        if (IsConstraintMet(sender))
+        {
+            singleComplete = singleInteraction ? true : false;
+
+            interactAction.Invoke(sender);
+        }
+            
     }
 
     public virtual string GetContext()
@@ -36,7 +46,24 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         context = newContext;
     }
+
+    private bool IsConstraintMet(PlayerBase sender)
+    {
+        if (singleComplete)
+            return false;
+
+        Item heldItem = sender.GetHeldItem();
+        return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType) || (!itemConstraint.constraintActive);
+    }
 }
+
+[System.Serializable]
+public struct ItemConstraint 
+{
+    public bool constraintActive;
+    public ItemType itemType;
+}
+
 
 public interface IInteractable 
 {
