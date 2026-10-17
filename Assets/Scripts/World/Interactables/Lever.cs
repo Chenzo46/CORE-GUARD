@@ -24,11 +24,6 @@ public class Lever : Interactable
         leverHand.localRotation = Quaternion.Euler(-60f, 0, 0);
         switchOnTween = leverHand.DOLocalRotate(new Vector3(60f, 0, 0), 0.5f).SetEase(Ease.OutBack).SetAutoKill(false).Pause();
         switchOffTween = leverHand.DOLocalRotate(new Vector3(-60f, 0, 0), 0.5f).SetEase(Ease.OutBack).SetAutoKill(false).Pause();
-
-        switchOnTween.OnComplete(() =>
-        {
-            
-        });
     }
 
     public override void InteractFunction(PlayerBase sender)
