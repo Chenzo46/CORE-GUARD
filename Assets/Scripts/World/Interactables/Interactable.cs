@@ -7,6 +7,8 @@ public class Interactable : MonoBehaviour, IInteractable
     public Action<PlayerBase> interactAction;
     public Action OnInteractComplete;
 
+    [Header("Interactable Settings")]
+
     [SerializeField] private string context = "Interactable Object";
     [SerializeField] private bool singleInteraction = false;
     [SerializeField] private bool interactionEnabled = true;

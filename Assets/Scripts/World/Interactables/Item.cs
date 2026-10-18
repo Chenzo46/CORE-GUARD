@@ -15,7 +15,7 @@ public class Item : Interactable
     private const int WORLD_LAYER = 10;
 
     private Vector3 dampRef;
-
+    [Header("Item Settings")]
     [SerializeField] private ItemType itemType = ItemType.None;
 
 
