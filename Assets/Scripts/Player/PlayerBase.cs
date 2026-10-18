@@ -24,6 +24,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkRadius;
     [SerializeField] private float handFollowStrength = 20f;
+    [SerializeField] private Vector3 handOffset = Vector3.zero;
     [SerializeField] private Transform eyeLevelTransform;
     [Header("Object Interaction")]
     [SerializeField] private float interactDistance = 2f;
@@ -212,8 +213,8 @@ public class PlayerBase : MonoBehaviour
 
     private void HeldItemBehavior()
     {
-
-        if(heldItem == null)
+        heldItemTransform.localPosition = handOffset;
+        if (heldItem == null)
             return;
 
         if(dropAction.WasPerformedThisFrame())
@@ -235,5 +236,8 @@ public class PlayerBase : MonoBehaviour
     {
         Gizmos.color = IsGrounded() ? Color.blue : Color.red;
         Gizmos.DrawSphere(checkPivot.position, checkRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(eyeLevelTransform.position + handOffset, 0.1f);
     }
 }
