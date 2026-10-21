@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -16,6 +17,7 @@ public class MonitorScreen : Interactable
     [Header("Virtual Cursor")]
     [SerializeField] private Canvas monitorCanvas;
     [SerializeField] private float sensitivity = 0.5f;
+    [SerializeField] private float gamepadSensitivityScale = 2000;
     private InputActionMap monitorActionMap, movementActionMap;
     private InputAction dragCursorAction;
     private InputAction leftClickAction;
@@ -92,6 +94,7 @@ public class MonitorScreen : Interactable
         movementActionMap.Disable();
         monitorActionMap.Enable();
         GUIManager.Singleton.SwitchToMonitorHUD();
+        cursor.gameObject.SetActive(true);
 
         isFoucsed = true;
 
@@ -116,6 +119,7 @@ public class MonitorScreen : Interactable
             movementActionMap.Enable();
             monitorActionMap.Disable();
             GUIManager.Singleton.SwitchToBaseHUD();
+            cursor.gameObject.SetActive(false);
 
             cursor.anchoredPosition = Vector2.zero;
             // tween main camera back to player
@@ -140,7 +144,13 @@ public class MonitorScreen : Interactable
     {
         if (!isFoucsed) return;
 
-        Vector2 delta = dragCursorAction.ReadValue<Vector2>() * sensitivity;
+        Vector2 delta;
+        InputDevice device = dragCursorAction.activeControl?.device;
+
+        if (device is Gamepad)
+            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity * gamepadSensitivityScale * Time.deltaTime;
+        else
+            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity;
 
         cursor.anchoredPosition += delta;
         ClampCursor();

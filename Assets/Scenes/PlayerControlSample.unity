@@ -700,7 +700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &251394400
 RectTransform:
   m_ObjectHideFlags: 0
@@ -867,6 +867,7 @@ MonoBehaviour:
   cameraPivotPoint: {fileID: 2096620590}
   monitorCanvas: {fileID: 470696287}
   sensitivity: 0.75
+  gamepadSensitivityScale: 2000
 --- !u!64 &312309364
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2443,6 +2444,7 @@ MonoBehaviour:
   cameraPivotPoint: {fileID: 1868137250}
   monitorCanvas: {fileID: 1096886957}
   sensitivity: 0.75
+  gamepadSensitivityScale: 2000
 --- !u!64 &656787460
 MeshCollider:
   m_ObjectHideFlags: 0
