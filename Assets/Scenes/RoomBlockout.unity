@@ -246,8 +246,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestInteractable
   context: Tester
   singleInteraction: 0
+  interactionEnabled: 1
   itemConstraint:
     constraintActive: 1
+    requireFreeHands: 0
     itemType: 2
 --- !u!1 &133129020
 GameObject:
@@ -1754,8 +1756,6 @@ MonoBehaviour:
   gravity: -39.24
   moveSpeed: 100
   counterMovement: 10
-  maxSpeed: 10
-  maxFallSpeed: 30
   airMoveFactor: 0.3
   lookSensitivity: 0.1
   gamepadSensitivityScale: 2000
@@ -1765,7 +1765,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   checkRadius: 0.38
-  handFollowStrength: 20
+  handOffset: {x: 0, y: 0, z: 0}
   eyeLevelTransform: {fileID: 1884132106}
   interactDistance: 2
   interactableMask:
@@ -1936,6 +1936,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GUIManager
   interactCtxLabel: {fileID: 1904889355}
+  baseHUDGroup: {fileID: 0}
+  monitorHUDGroup: {fileID: 0}
 --- !u!1 &766958979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,8 +2348,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   context: ScrewDriver
   singleInteraction: 0
+  interactionEnabled: 1
   itemConstraint:
     constraintActive: 0
+    requireFreeHands: 0
     itemType: 0
   itemType: 1
 --- !u!54 &890164247
@@ -2888,8 +2892,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   context: Broom
   singleInteraction: 0
+  interactionEnabled: 1
   itemConstraint:
     constraintActive: 0
+    requireFreeHands: 0
     itemType: 0
   itemType: 2
 --- !u!54 &1329997876
@@ -3153,8 +3159,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestInteractable
   context: Tester
   singleInteraction: 1
+  interactionEnabled: 1
   itemConstraint:
     constraintActive: 1
+    requireFreeHands: 0
     itemType: 2
 --- !u!65 &1626717145
 BoxCollider:
@@ -3325,6 +3333,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -6788218605589944730, guid: 578f6270b7ec5ae468589d54fc73c274, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c0ec2e13a2d8c43459bdac8994574705, type: 2}
     - target: {fileID: -4059603924244447203, guid: 578f6270b7ec5ae468589d54fc73c274, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -3373,6 +3385,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4677971494733633006, guid: 578f6270b7ec5ae468589d54fc73c274, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c0ec2e13a2d8c43459bdac8994574705, type: 2}
     - target: {fileID: 5360538690872367603, guid: 578f6270b7ec5ae468589d54fc73c274, type: 3}
       propertyPath: m_Layer
       value: 7
