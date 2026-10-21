@@ -38,6 +38,9 @@ public class MonitorScreen : Interactable
 
     private Sequence MonitorCameraTween;
 
+    private PlayerBase currentViewer;
+    private Vector3 orgCamRot;
+
     public override void Awake()
     {
         base.Awake();
@@ -86,6 +89,8 @@ public class MonitorScreen : Interactable
     {
         base.InteractFunction(sender);
 
+        currentViewer = sender;
+        orgCamRot = Camera.main.transform.rotation.eulerAngles;
         EnterMonitor();
     }
 
@@ -112,18 +117,21 @@ public class MonitorScreen : Interactable
     {
         if (ctx.performed && isFoucsed && !MonitorCameraTween.IsPlaying())
         {
+            MoveCameraToPlayer();
+
             ReleaseAll();
-
             if (uiModule) uiModule.enabled = true;
-
-            movementActionMap.Enable();
-            monitorActionMap.Disable();
             GUIManager.Singleton.SwitchToBaseHUD();
             cursor.gameObject.SetActive(false);
 
-            cursor.anchoredPosition = Vector2.zero;
-            // tween main camera back to player
-            isFoucsed = false;
+            MonitorCameraTween.OnComplete(() =>
+            {
+                movementActionMap.Enable();
+                monitorActionMap.Disable();
+                cursor.anchoredPosition = Vector2.zero;
+                // tween main camera back to player
+                isFoucsed = false;
+            });
         }
     }
 
@@ -135,6 +143,21 @@ public class MonitorScreen : Interactable
 
         MonitorCameraTween.Append(Camera.main.transform.DOMove(cameraPivotPoint.position, 0.3f).SetAutoKill(false));
         MonitorCameraTween.Join(Camera.main.transform.DORotate(cameraPivotPoint.rotation.eulerAngles, 0.3f).SetAutoKill(false));
+
+        MonitorCameraTween.SetAutoKill(false);
+        MonitorCameraTween.Play();
+    }
+
+    private void MoveCameraToPlayer()
+    {
+        MonitorCameraTween?.Kill();
+
+        MonitorCameraTween = DOTween.Sequence();
+
+        Vector3 camEyeLevelPos = currentViewer.GetEyeLevelTransform().position;
+
+        MonitorCameraTween.Append(Camera.main.transform.DOMove(camEyeLevelPos, 0.3f).SetAutoKill(false));
+        MonitorCameraTween.Join(Camera.main.transform.DORotate(orgCamRot, 0.3f).SetAutoKill(false));
 
         MonitorCameraTween.SetAutoKill(false);
         MonitorCameraTween.Play();

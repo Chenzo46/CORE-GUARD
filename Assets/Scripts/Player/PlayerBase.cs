@@ -206,6 +206,11 @@ public class PlayerBase : MonoBehaviour
         return heldItemTransform;
     }
 
+    public Transform GetEyeLevelTransform()
+    {
+        return eyeLevelTransform;
+    }
+
     public void SetHeldItem(Item it)
     {
         heldItem = it;
