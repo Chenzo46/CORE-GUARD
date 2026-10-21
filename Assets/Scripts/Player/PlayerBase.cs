@@ -14,8 +14,8 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float counterMovement = 1f;
-    [SerializeField] private float maxSpeed = 10f;
-    [SerializeField] private float maxFallSpeed = 30f;
+    //[SerializeField] private float maxSpeed = 10f;
+    //[SerializeField] private float maxFallSpeed = 30f;
     [SerializeField] private float airMoveFactor = 0.3f;
     [SerializeField] private float lookSensitivity;
     [SerializeField] private float gamepadSensitivityScale = 100f;
@@ -23,7 +23,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private float jumpCancelStrength = 0.5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkRadius;
-    [SerializeField] private float handFollowStrength = 20f;
+    //[SerializeField] private float handFollowStrength = 20f;
     [SerializeField] private Vector3 handOffset = Vector3.zero;
     [SerializeField] private Transform eyeLevelTransform;
     [Header("Object Interaction")]
@@ -138,6 +138,11 @@ public class PlayerBase : MonoBehaviour
 
     private void look()
     {
+        if (!moveActionMap.enabled)
+        {
+            return;
+        }
+
         lookDir = lookAction.ReadValue<Vector2>();
 
         Camera.main.transform.position = eyeLevelTransform.position;
@@ -161,6 +166,11 @@ public class PlayerBase : MonoBehaviour
 
     private void LookingAtInteractable()
     {
+        if (!moveActionMap.enabled)
+        {
+            GUIManager.Singleton.SetInteractableContext(string.Empty);
+            return;
+        }
         RaycastHit hit;
 
         bool inView = Physics.Linecast(eyeLevelTransform.position, 

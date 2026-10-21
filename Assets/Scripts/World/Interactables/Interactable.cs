@@ -59,7 +59,9 @@ public class Interactable : MonoBehaviour, IInteractable
             return false;
 
         Item heldItem = sender.GetHeldItem();
-        return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType) || (!itemConstraint.constraintActive);
+        return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType) 
+            || (itemConstraint.constraintActive && itemConstraint.requireFreeHands && heldItem == null)
+            || (!itemConstraint.constraintActive);
     }
 
     public void SetInteractionEnabled(bool enabled)
@@ -72,6 +74,7 @@ public class Interactable : MonoBehaviour, IInteractable
 public struct ItemConstraint 
 {
     public bool constraintActive;
+    public bool requireFreeHands;
     public ItemType itemType;
 }
 
