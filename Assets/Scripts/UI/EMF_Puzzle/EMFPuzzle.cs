@@ -4,6 +4,7 @@ using UnityEngine;
 public class EMFPuzzle : MonoBehaviour
 {
     [SerializeField] private RectTransform CursorObject;
+    [SerializeField] private MonitorScreen _monitor;
 
     // Maybe we can generate a puzzle based off of a root prefab??
     [SerializeField] private GameObject EMFPuzzleRootPrefab;
@@ -12,6 +13,8 @@ public class EMFPuzzle : MonoBehaviour
     [SerializeField] private float slotDistance = 1;
     private EMFPuzzlePiece EMFPuzzleRoot;
 
+    public static EMFPuzzle Singleton;
+
     //private List<EMFPuzzleSlot> puzzleSlots = new List<EMFPuzzleSlot>();
     private EMFPuzzleSlot rootPuzzleSlot = new EMFPuzzleSlot();
 
@@ -19,7 +22,12 @@ public class EMFPuzzle : MonoBehaviour
 
     private void Awake()
     {
-        InitializeEMFPuzzle();
+        Singleton = this;
+    }
+
+    private void Start()
+    {
+        //InitializeEMFPuzzle();
     }
 
     public RectTransform GetCursorObject()
@@ -39,9 +47,9 @@ public class EMFPuzzle : MonoBehaviour
         Vector2 rootPos = EMFPuzzleRoot.transform.position;
         traveledPositions.Add(rootPos);
 
-        GenerateSlots(rootPuzzleSlot, 0, rootPos, 1);
-        GenerateSlots(rootPuzzleSlot, 1, rootPos, 1);
-        GenerateSlots(rootPuzzleSlot, 2, rootPos, 1);
+        //GenerateSlots(rootPuzzleSlot, 0, rootPos, 1);
+        //GenerateSlots(rootPuzzleSlot, 1, rootPos, 1);
+        //GenerateSlots(rootPuzzleSlot, 2, rootPos, 1);
     }
 
     private void GenerateSlots(EMFPuzzleSlot previousPuzzleSlot, int direction, Vector2 pos, int localDepth)
@@ -115,6 +123,11 @@ public class EMFPuzzle : MonoBehaviour
     {
         puzzleSlot = null;
         return false;
+    }
+
+    public MonitorScreen GetMonitor()
+    {
+        return _monitor;
     }
 
     [System.Serializable]
