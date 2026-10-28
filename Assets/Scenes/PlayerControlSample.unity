@@ -3742,6 +3742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EMFPuzzle
   CursorObject: {fileID: 251394400}
+  _monitor: {fileID: 312309363}
   EMFPuzzleRootPrefab: {fileID: 334723025262915092, guid: f035650f15edaf2429e8b6fedb4b5d32, type: 3}
   EMFPuzzleSlotPrefab: {fileID: 3735809407827635600, guid: 9136eb6f453eb964ca9ef00255271d99, type: 3}
   puzzleDepth: 1
@@ -7286,7 +7287,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 32
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: dc18dbb63e284f348b3e5503e07a5a49, type: 2}
+  m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
