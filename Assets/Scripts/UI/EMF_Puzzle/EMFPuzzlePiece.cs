@@ -12,7 +12,24 @@ public class EMFPuzzlePiece : MonoBehaviour
     private void Awake()
     {
         _rt = GetComponent<RectTransform>();
-        puzzleParent = transform.parent.parent.GetComponent<EMFPuzzle>();
+    }
+
+    private void Start()
+    {
+
+        puzzleParent = EMFPuzzle.Singleton;
+
+        puzzleParent.GetMonitor().OnMonitorExit += DropPiece;
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        puzzleParent.GetMonitor().OnMonitorExit -= DropPiece;
     }
 
     private void Update()
@@ -20,7 +37,7 @@ public class EMFPuzzlePiece : MonoBehaviour
         if (CursorObject == null)
             return;
 
-        _rt.anchoredPosition = CursorObject.anchoredPosition;
+        //_rt.anchoredPosition = CursorObject.anchoredPosition;
     }
 
     public void HandleOnClick()
@@ -28,14 +45,21 @@ public class EMFPuzzlePiece : MonoBehaviour
         if(CursorObject == null)
         {
             CursorObject = puzzleParent.GetCursorObject();
+            transform.SetParent(CursorObject.transform);
         }
         else
         {
-            CursorObject = null;
-            // Player is releasing puzzle piece
-            // if piece is over a slot and slot can take piece, place onto slot
-            // if piece is not over slot or slot is invalid, tween back to original anchored position
+            DropPiece();
         }
+    }
+
+    private void DropPiece()
+    {
+        CursorObject = null;
+        transform.SetParent(puzzleParent.transform);
+        // Player is releasing puzzle piece
+        // if piece is over a slot and slot can take piece, place onto slot
+        // if piece is not over slot or slot is invalid, tween back to original anchored position
     }
 
     public NodeConnectionType[] GetNodeConnections()
@@ -45,6 +69,14 @@ public class EMFPuzzlePiece : MonoBehaviour
     public int GetConnectionStep()
     {
         return connectionStepDirection;
+    }
+
+    private void HandleHeldPiece()
+    {
+        if (CursorObject == null)
+            return;
+
+        DropPiece();
     }
 
     public enum NodeConnectionType

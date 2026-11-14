@@ -1,6 +1,6 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -40,6 +40,9 @@ public class MonitorScreen : Interactable
 
     private PlayerBase currentViewer;
     private Vector3 orgCamRot;
+
+    public Action OnMonitorEnter;
+    public Action OnMonitorExit;
 
     public override void Awake()
     {
@@ -111,6 +114,8 @@ public class MonitorScreen : Interactable
 
         pointer = new PointerEventData(EventSystem.current);
         cursor.anchoredPosition = Vector2.zero;
+
+        OnMonitorEnter?.Invoke();
     }
 
     private void LeaveMonitor(InputAction.CallbackContext ctx)
@@ -123,6 +128,8 @@ public class MonitorScreen : Interactable
             if (uiModule) uiModule.enabled = true;
             GUIManager.Singleton.SwitchToBaseHUD();
             cursor.gameObject.SetActive(false);
+
+            OnMonitorEnter?.Invoke();
 
             MonitorCameraTween.OnComplete(() =>
             {
