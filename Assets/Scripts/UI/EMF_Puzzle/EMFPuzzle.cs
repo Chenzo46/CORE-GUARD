@@ -27,6 +27,15 @@ public class EMFPuzzle : MonoBehaviour
         return CursorObject;
     }
 
+    private readonly HashSet<Vector2Int> traveledCells = new HashSet<Vector2Int>();
+
+    private struct PendingSlot
+    {
+        public EMFPuzzleSlot slot;
+        public Vector2Int cell;
+        public int depth;
+    }
+
     private void InitializeEMFPuzzle()
     {
         EMFPuzzleRoot = Instantiate(EMFPuzzleRootPrefab, Vector2.zero, Quaternion.identity, transform).GetComponent<EMFPuzzlePiece>();
@@ -37,60 +46,65 @@ public class EMFPuzzle : MonoBehaviour
         rootPuzzleSlot.connections = new EMFPuzzleSlot[3];
 
         Vector2 rootPos = EMFPuzzleRoot.transform.position;
-        traveledPositions.Add(rootPos);
-
-        GenerateSlots(rootPuzzleSlot, 0, rootPos, 1);
-        GenerateSlots(rootPuzzleSlot, 1, rootPos, 1);
-        GenerateSlots(rootPuzzleSlot, 2, rootPos, 1);
+        GenerateSlots(rootPos);
     }
 
-    private void GenerateSlots(EMFPuzzleSlot previousPuzzleSlot, int direction, Vector2 pos, int localDepth)
+    private void GenerateSlots(Vector2 rootPos)
     {
-        if (localDepth > puzzleDepth)
-            return;
+        traveledCells.Clear();
 
-        int newOrientation = previousPuzzleSlot.orientation * -1;
-        Vector2 nPos = pos + slotDistance * GetDirectionByOrientation(newOrientation, direction);
+        var queue = new Queue<PendingSlot>();
+        var rootCell = Vector2Int.zero;
+        traveledCells.Add(rootCell);
+        queue.Enqueue(new PendingSlot { slot = rootPuzzleSlot, cell = rootCell, depth = 0 });
 
-        if (traveledPositions.Contains(nPos))
-            return;
-
-        traveledPositions.Add(nPos);
-
-        EMFPuzzleSlot puzzleSlot = new EMFPuzzleSlot
+        while (queue.Count > 0)
         {
-            slot = Instantiate(EMFPuzzleSlotPrefab, nPos, Quaternion.identity, transform).GetComponent<RectTransform>(),
-            piece = null,
-            orientation = newOrientation,
-            connections = new EMFPuzzleSlot[3]
-        };
+            PendingSlot current = queue.Dequeue();
 
-        previousPuzzleSlot.connections[CorrectConnectionIndex(previousPuzzleSlot.orientation, direction)] = puzzleSlot;
+            // Slots at this depth exist, but don't expand past puzzleDepth
+            if (current.depth >= puzzleDepth)
+                continue;
 
-        GenerateSlots(puzzleSlot, 0, nPos, localDepth+1);
-        GenerateSlots(puzzleSlot, 1, nPos, localDepth+1);
-        GenerateSlots(puzzleSlot, 2, nPos, localDepth+1);
-    }
+            int newOrientation = current.slot.orientation * -1;
 
-    private Vector2 GetDirectionByOrientation(int orientation, int direction)
-    {
-        Vector2 dir = new Vector2();
-        
-        switch (direction) 
-        {
-            case 0:
-                dir = orientation == 1 ? Vector2.right : Vector2.left;
-                break;
-            case 1:
-                dir = orientation == 1 ? Vector2.down : Vector2.up;
-                break;
-            case 2:
-                dir = orientation == 1 ? Vector2.left : Vector2.right;
-                break;
+            for (int direction = 0; direction < 3; direction++)
+            {
+                Vector2Int nCell = current.cell + GetDirectionByOrientation(newOrientation, direction);
+
+                // Integer grid coords make this check exact
+                if (!traveledCells.Add(nCell))
+                    continue;
+
+                Vector2 nPos = rootPos + (Vector2)nCell * slotDistance;
+
+                EMFPuzzleSlot puzzleSlot = new EMFPuzzleSlot
+                {
+                    slot = Instantiate(EMFPuzzleSlotPrefab, nPos, Quaternion.identity, transform).GetComponent<RectTransform>(),
+                    piece = null,
+                    orientation = newOrientation,
+                    connections = new EMFPuzzleSlot[3]
+                };
+
+                current.slot.connections[CorrectConnectionIndex(current.slot.orientation, direction)] = puzzleSlot;
+
+                queue.Enqueue(new PendingSlot { slot = puzzleSlot, cell = nCell, depth = current.depth + 1 });
+            }
         }
-
-        return dir;
     }
+
+    private Vector2Int GetDirectionByOrientation(int orientation, int direction)
+    {
+        switch (direction)
+        {
+            case 0: return orientation == 1 ? Vector2Int.right : Vector2Int.left;
+            case 1: return orientation == 1 ? Vector2Int.down : Vector2Int.up;
+            case 2: return orientation == 1 ? Vector2Int.left : Vector2Int.right;
+            default: return Vector2Int.zero;
+        }
+    }
+
+   
 
     private int CorrectConnectionIndex(int orientation, int direction)
     {
@@ -117,8 +131,7 @@ public class EMFPuzzle : MonoBehaviour
         return false;
     }
 
-    [System.Serializable]
-    private struct EMFPuzzleSlot 
+    private class EMFPuzzleSlot
     {
         public RectTransform slot;
         public EMFPuzzlePiece piece;
