@@ -96,4 +96,6 @@ public enum ItemType
     None,
     Screwdriver,
     Broom,
+
+    Plug,
 }

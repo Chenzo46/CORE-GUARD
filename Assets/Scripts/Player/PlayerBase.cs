@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Linq;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -231,6 +232,16 @@ public class PlayerBase : MonoBehaviour
         heldItemTransform.localPosition = handOffset;
         if (heldItem == null)
             return;
+
+        if(heldItem.GetItemType() == ItemType.Plug)
+        {
+            Transform cableRoot = heldItem.transform.parent.GetChild(0);
+           
+            if(Vector3.Distance(cableRoot.position, transform.position) > 5f)
+            {
+                heldItem.Drop();
+            }
+        }
 
         if(dropAction.WasPerformedThisFrame())
         {
