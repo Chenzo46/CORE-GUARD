@@ -11,6 +11,7 @@ public class MonitorScreen : Interactable
 {
     [Header("Monitor Properties")]
     [SerializeField] private InputActionAsset _ipa;
+    [SerializeField] private MeshRenderer _monitorMr;
     [SerializeField] private RectTransform cursor;
     [SerializeField] private Transform cameraPivotPoint;
     [SerializeField] private Material offMat;
@@ -47,6 +48,8 @@ public class MonitorScreen : Interactable
     public Action OnMonitorEnter;
     public Action OnMonitorExit;
 
+    private bool isPluggedIn = true;
+
     public override void Awake()
     {
         base.Awake();
@@ -63,6 +66,9 @@ public class MonitorScreen : Interactable
 
         foreach (Graphic g in cursor.GetComponentsInChildren<Graphic>())
             g.raycastTarget = false;
+
+        if (!IsMonitorAwake)
+            _monitorMr.material = offMat;
     }
 
     private void OnEnable()
@@ -93,6 +99,9 @@ public class MonitorScreen : Interactable
 
     public override void InteractFunction(PlayerBase sender)
     {
+        if (!IsMonitorAwake)
+            return;
+
         base.InteractFunction(sender);
 
         currentViewer = sender;
@@ -280,5 +289,19 @@ public class MonitorScreen : Interactable
         }
         ExitHover();
         hitObject = null;
+    }
+
+    public void TurnMonitorOn()
+    {
+        if(IsMonitorAwake || !isPluggedIn)
+            return;
+
+        IsMonitorAwake = true;
+        _monitorMr.material = onMat;
+    }
+
+    public void SetPluggedIn()
+    {
+        isPluggedIn = true;
     }
 }
