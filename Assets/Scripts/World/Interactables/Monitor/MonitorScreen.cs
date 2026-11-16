@@ -13,6 +13,9 @@ public class MonitorScreen : Interactable
     [SerializeField] private InputActionAsset _ipa;
     [SerializeField] private RectTransform cursor;
     [SerializeField] private Transform cameraPivotPoint;
+    [SerializeField] private Material offMat;
+    [SerializeField] private Material onMat;
+    [SerializeField] private bool IsMonitorAwake = true;
 
     [Header("Virtual Cursor")]
     [SerializeField] private Canvas monitorCanvas;
