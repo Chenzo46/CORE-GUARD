@@ -1108,6 +1108,16 @@
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
+                },
+                {
+                    "name": "Quick Boot",
+                    "type": "Value",
+                    "id": "064f0a13-5a34-4533-8cdf-4614e225482e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -1174,6 +1184,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Leave",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17f0c5e7-8ea9-4dd9-bb2a-2617de4a852d",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Boot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0f1978b4-7f63-4767-8117-5bd7ae09ba7a",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Boot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

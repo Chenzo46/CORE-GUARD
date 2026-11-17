@@ -36,7 +36,7 @@ public class ScrewPlateCover : Interactable
         currentScrew.transform.DOLocalRotate(new Vector3(0, 0, 60), 0.3f).OnComplete(() => 
         {
             currentScrew.isKinematic = false;
-            currentScrew.AddForce(transform.forward * 5f, ForceMode.Impulse);
+            currentScrew.AddForce(transform.up * 5f, ForceMode.Impulse);
 
             currentScrew.transform.DOScale(Vector3.zero, 0.5f).SetDelay(1f).OnComplete(() =>
             {
@@ -47,7 +47,7 @@ public class ScrewPlateCover : Interactable
             {
                 Debug.Log("All screws removed.");
                 _plateRb.isKinematic = false;
-                _plateRb.AddForce(transform.forward * 5f, ForceMode.Impulse);
+                _plateRb.AddForce(transform.up * 5f, ForceMode.Impulse);
 
                 transform.DOScale(Vector3.zero, 0.5f).SetDelay(1f).OnComplete(() =>
                 {

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class CoolantSynthesizer : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class CoolantSynthesizer : MonoBehaviour
     [Header("Boot Screen Variables")]
     [SerializeField] private Image loadingSlider;
     [SerializeField] private CanvasGroup QuikBewtGroup;
+    [SerializeField] private TMP_Text bootCtx;
+    [SerializeField] private InputActionAsset _ipa;
     [SerializeField] private float bootTime = 5f;
     [SerializeField] private float quikBootPopTime = 1f;
     [SerializeField] private float quikBootTimeWindow = 1f;
@@ -38,6 +41,9 @@ public class CoolantSynthesizer : MonoBehaviour
 
     private bool loading = false;
     private bool synthOpen = false;
+
+    private InputActionMap monitorActionMap;
+    private InputAction quickBootAction;
 
     private enum CoolantMaterialType
     {
@@ -50,6 +56,9 @@ public class CoolantSynthesizer : MonoBehaviour
     {
         InitButtons();
         ConvertListToRecipe();
+
+        monitorActionMap = _ipa.FindActionMap("Monitor");
+        quickBootAction = monitorActionMap.FindAction("Quick Boot");
     }
 
     private void OnEnable()
@@ -138,6 +147,7 @@ public class CoolantSynthesizer : MonoBehaviour
             return;
 
         loading = true;
+        bootCtx.text = "Loading Synthesizer...";
 
         // Show/Start loading progress bar
         // Use Coroutine to progress bar and prompt quik bewt
@@ -158,6 +168,8 @@ public class CoolantSynthesizer : MonoBehaviour
 
             loadingSlider.fillAmount = prog;
 
+            bootCtx.text = $"Loading Synthesizer... {(int)(prog*100f)}%";
+
             timeElapsed += Time.deltaTime;
 
             if (timeElapsed >= bootTime)
@@ -166,7 +178,8 @@ public class CoolantSynthesizer : MonoBehaviour
             quickBootShowing = timeElapsed >= quikBootPopTime && timeElapsed <= quikBootPopTime + quikBootTimeWindow;
             GUIManager.ShowCanvasGroupOverlap(QuikBewtGroup, quickBootShowing);
 
-            if (quickBootShowing /* && Put Input here */)
+            
+            if (quickBootShowing && quickBootAction.WasPerformedThisFrame())
             {
                 prog = 1f;
                 break;
@@ -175,7 +188,9 @@ public class CoolantSynthesizer : MonoBehaviour
             yield return null;
         }
 
+        GUIManager.ShowCanvasGroupOverlap(QuikBewtGroup, false);
         loadingSlider.fillAmount = prog;
+        bootCtx.text = "Loading Synthesizer... Done!";
 
         // finalize boot
         yield return new WaitForSeconds(0.1f);
