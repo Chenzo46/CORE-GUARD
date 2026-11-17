@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -48,6 +49,22 @@ public class GUIManager : MonoBehaviour
 
         if (show)
             currentGroup = cg;
+    }
+
+    public static void ShowCanvasGroupOverlap(CanvasGroup cg, bool show)
+    {
+        cg.alpha = show ? 1 : 0;
+        cg.blocksRaycasts = show;
+        cg.interactable = show;
+    }
+
+    public static void FadeCanvasGroup(CanvasGroup cg, float finalAlpha, float duration)
+    {
+        DOTween.To(x => cg.alpha = x, cg.alpha, finalAlpha, duration).OnComplete(() =>
+        {
+            cg.blocksRaycasts = finalAlpha != 0f;
+            cg.interactable = finalAlpha != 0f;
+        });
     }
 
     public static bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)

@@ -17,6 +17,7 @@ public class MonitorScreen : Interactable
     [SerializeField] private Material offMat;
     [SerializeField] private Material onMat;
     [SerializeField] private bool IsMonitorAwake = true;
+    [SerializeField] private bool isPluggedIn = true;
 
     [Header("Virtual Cursor")]
     [SerializeField] private Canvas monitorCanvas;
@@ -47,8 +48,9 @@ public class MonitorScreen : Interactable
 
     public Action OnMonitorEnter;
     public Action OnMonitorExit;
+    public Action OnMonitorAwake;
 
-    private bool isPluggedIn = true;
+    
 
     public override void Awake()
     {
@@ -298,6 +300,7 @@ public class MonitorScreen : Interactable
 
         IsMonitorAwake = true;
         _monitorMr.material = onMat;
+        OnMonitorAwake?.Invoke();
     }
 
     public void SetPluggedIn()

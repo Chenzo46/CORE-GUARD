@@ -3,20 +3,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using System.Collections;
 
 public class CoolantSynthesizer : MonoBehaviour
 {
+    [SerializeField] private MonitorScreen _monitorScreen;
+    [Header("Synthesizer Variables/Settings")]
     // Water, Fire, Ice
     [SerializeField] private RectTransform coolantResultant; // Maybe make color average of material input color
     [SerializeField] private float resultSizeMultipler = 1.2f;
     [SerializeField] private Button[] materialButtons = new Button[3];
     [SerializeField] private GameObject[] materialIconPrefabs = new GameObject[3];
     [SerializeField] private TMP_Text[] recipeLabels = new TMP_Text[3];
+    [SerializeField] private List<CoolantMaterialType> recipeAsList = new List<CoolantMaterialType>();
+
+    [Header("Screen Canvas Groups")]
+
+    [SerializeField] private CanvasGroup BootScreen;
+    [SerializeField] private CanvasGroup SynthScreen;
+    [SerializeField] private CanvasGroup CompleteScreen;
+    [SerializeField] private CanvasGroup PopupScreen;
+
+
+    // Boot screen variables
+    [Header("Boot Screen Variables")]
+    [SerializeField] private Image loadingSlider;
+    [SerializeField] private CanvasGroup QuikBewtGroup;
+    [SerializeField] private float bootTime = 5f;
+    [SerializeField] private float quikBootPopTime = 1f;
+    [SerializeField] private float quikBootTimeWindow = 1f;
 
     private Dictionary<CoolantMaterialType, int> materialInputs = new Dictionary<CoolantMaterialType, int>();
     private Dictionary<CoolantMaterialType, int> coolantRecipe = new Dictionary<CoolantMaterialType, int>();
 
-    [SerializeField] private List<CoolantMaterialType> recipeAsList = new List<CoolantMaterialType>();
+    private bool loading = false;
+    private bool synthOpen = false;
 
     private enum CoolantMaterialType
     {
@@ -29,6 +50,16 @@ public class CoolantSynthesizer : MonoBehaviour
     {
         InitButtons();
         ConvertListToRecipe();
+    }
+
+    private void OnEnable()
+    {
+        _monitorScreen.OnMonitorEnter += BeginLoading;
+    }
+
+    private void OnDisable()
+    {
+        _monitorScreen.OnMonitorEnter -= BeginLoading;
     }
 
     private void InitButtons()
@@ -99,5 +130,56 @@ public class CoolantSynthesizer : MonoBehaviour
         Sequence addToResult = DOTween.Sequence();
 
         addToResult.Append(coolantResultant.DOScale(coolantResultant.localScale * resultSizeMultipler, 0.33f).SetEase(Ease.OutBounce));
+    }
+
+    private void BeginLoading()
+    {
+        if (loading || synthOpen)
+            return;
+
+        loading = true;
+
+        // Show/Start loading progress bar
+        // Use Coroutine to progress bar and prompt quik bewt
+        StartCoroutine(LoadSystemRoutine());
+    }
+
+    private IEnumerator LoadSystemRoutine()
+    {
+        float prog = 0;
+
+        float timeElapsed = 0;
+
+        bool quickBootShowing = false;
+
+        while (true)
+        {
+            prog = timeElapsed / bootTime;
+
+            loadingSlider.fillAmount = prog;
+
+            timeElapsed += Time.deltaTime;
+
+            if (timeElapsed >= bootTime)
+                break;
+
+            quickBootShowing = timeElapsed >= quikBootPopTime && timeElapsed <= quikBootPopTime + quikBootTimeWindow;
+            GUIManager.ShowCanvasGroupOverlap(QuikBewtGroup, quickBootShowing);
+
+            if (quickBootShowing /* && Put Input here */)
+            {
+                prog = 1f;
+                break;
+            }
+
+            yield return null;
+        }
+
+        loadingSlider.fillAmount = prog;
+
+        // finalize boot
+        yield return new WaitForSeconds(0.1f);
+        GUIManager.FadeCanvasGroup(BootScreen, 0f, 0.3f);
+        synthOpen = true;
     }
 }
