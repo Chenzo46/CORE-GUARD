@@ -24,6 +24,8 @@ public class CoolantSynthesizer : MonoBehaviour
     [SerializeField] private CanvasGroup SynthScreen;
     [SerializeField] private CanvasGroup CompleteScreen;
     [SerializeField] private CanvasGroup PopupScreen;
+    [SerializeField] private CanvasGroup PopupWindow;
+    [SerializeField] private Button closePopButton;
 
 
     // Boot screen variables
@@ -196,5 +198,24 @@ public class CoolantSynthesizer : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         GUIManager.FadeCanvasGroup(BootScreen, 0f, 0.3f);
         synthOpen = true;
+
+        yield return new WaitForSeconds(0.3f);
+
+        // Open Popup Window
+        GUIManager.FadeCanvasGroup(PopupScreen, 1f, 0.3f);
+
+        RectTransform popupRt = PopupWindow.GetComponent<RectTransform>();
+
+        popupRt.localScale = Vector3.zero;
+        popupRt.DOScale(1f, 0.3f);
+
+        closePopButton.onClick.AddListener(() =>
+        {
+            popupRt.DOScale(0f, 0.3f).OnComplete(() =>
+            {
+                GUIManager.FadeCanvasGroup(PopupScreen, 0f, 0.3f);
+            });
+
+        });
     }
 }
