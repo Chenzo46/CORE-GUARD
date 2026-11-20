@@ -15,6 +15,7 @@ public class Interactable : MonoBehaviour, IInteractable
     public UnityEvent OnInteractCompleteUnity;
 
     private bool singleComplete = false;
+    private bool isLooking = false;
 
     public virtual void Awake()
     {
@@ -69,6 +70,11 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         interactionEnabled = enabled;
     }
+
+    public void UpdateIsLooking(bool isLooking)
+    {
+        this.isLooking = isLooking;
+    }
 }
 
 [System.Serializable]
@@ -85,4 +91,6 @@ public interface IInteractable
     public void Interact(PlayerBase sender);
     public string GetContext();
     public void SetContext(string newContext);
+
+    public void UpdateIsLooking(bool looking);
 }

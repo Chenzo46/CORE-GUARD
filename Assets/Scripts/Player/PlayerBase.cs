@@ -55,6 +55,7 @@ public class PlayerBase : MonoBehaviour
     //Item interaction
 
     private Item heldItem;
+    private IInteractable mostRecentLookedAt;
     
 
     private void Awake()
@@ -172,6 +173,13 @@ public class PlayerBase : MonoBehaviour
             GUIManager.Singleton.SetInteractableContext(string.Empty);
             return;
         }
+
+        if (mostRecentLookedAt != null)
+        {
+            mostRecentLookedAt.UpdateIsLooking(false);
+            mostRecentLookedAt = null;
+        }
+
         RaycastHit hit;
 
         bool inView = Physics.Linecast(eyeLevelTransform.position, 
@@ -184,6 +192,9 @@ public class PlayerBase : MonoBehaviour
             IInteractable interactable = hit.collider.transform.GetComponent<IInteractable>();
 
             GUIManager.Singleton.SetInteractableContext(interactable.GetContext());
+
+            interactable.UpdateIsLooking(true);
+            mostRecentLookedAt = interactable;
 
             if (interactAction.WasPressedThisFrame())
             {
@@ -230,6 +241,7 @@ public class PlayerBase : MonoBehaviour
     private void HeldItemBehavior()
     {
         heldItemTransform.localPosition = handOffset;
+
         if (heldItem == null)
             return;
 
