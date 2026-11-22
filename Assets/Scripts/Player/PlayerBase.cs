@@ -29,6 +29,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private Transform eyeLevelTransform;
     [Header("Object Interaction")]
     [SerializeField] private float interactDistance = 2f;
+    [SerializeField] private float interactRadius = 0.25f;
     [SerializeField] private LayerMask interactableMask;
     //Input Actions
     private InputActionMap moveActionMap;
@@ -182,31 +183,37 @@ public class PlayerBase : MonoBehaviour
             mostRecentLookedAt = null;
         }
 
-        RaycastHit hit;
+        Transform camT = Camera.main.transform;
 
-        bool inView = Physics.Linecast(eyeLevelTransform.position, 
-            eyeLevelTransform.position + Camera.main.transform.forward * interactDistance,
-            out hit,
-            interactableMask);
+        bool inView = Physics.SphereCast(
+            eyeLevelTransform.position,
+            interactRadius,
+            camT.forward,
+            out RaycastHit hit,
+            interactDistance,
+            interactableMask,
+            QueryTriggerInteraction.Collide);
 
-        if(inView)
+        if (inView)
         {
-            IInteractable interactable = hit.collider.transform.GetComponent<IInteractable>();
+            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
 
-            GUIManager.Singleton.SetInteractableContext(interactable.GetContext());
-
-            interactable.UpdateIsLooking(true);
-            mostRecentLookedAt = interactable;
-
-            if (interactAction.WasPressedThisFrame())
+            if (interactable != null)
             {
-                interactable.Interact(this);
+                GUIManager.Singleton.SetInteractableContext(interactable.GetContext());
+
+                interactable.UpdateIsLooking(true);
+                mostRecentLookedAt = interactable;
+
+                if (interactAction.WasPressedThisFrame())
+                {
+                    interactable.Interact(this);
+                }
+                return;
             }
         }
-        else
-        {
-            GUIManager.Singleton.SetInteractableContext(string.Empty);
-        }
+
+        GUIManager.Singleton.SetInteractableContext(string.Empty);
     }
 
     private bool IsGrounded()
