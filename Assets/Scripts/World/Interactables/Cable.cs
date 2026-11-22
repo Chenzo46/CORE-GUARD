@@ -28,6 +28,8 @@ public class Cable : MonoBehaviour
         if(isPluggedIn)
             return;
 
+        AudioManager.Singleton.PlaySound("plug-in");
+
         isPluggedIn = true;
 
         Item plugItem = plugRb.GetComponent<Item>();

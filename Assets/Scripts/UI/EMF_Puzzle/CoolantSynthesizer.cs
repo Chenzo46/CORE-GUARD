@@ -99,6 +99,8 @@ public class CoolantSynthesizer : MonoBehaviour
     {   
         Debug.Log("Adding Material: " + type.ToString());
 
+        AudioManager.Singleton.PlaySoundPitchRamp("add-coolant", 0.3f, 1f + materialInputs.Count * 0.2f);
+
         if (materialInputs.ContainsKey(type))
         {
             materialInputs[type]++;
@@ -130,6 +132,7 @@ public class CoolantSynthesizer : MonoBehaviour
 
         GUIManager.FadeCanvasGroup(CompleteScreen, 1f, 0.1f);
         coolantStatus = CoolantStatus.Complete;
+        AudioManager.Singleton.PlaySound("coolant-correct");
         Debug.Log("Coolant Finalized");
     }
 
@@ -212,6 +215,7 @@ public class CoolantSynthesizer : MonoBehaviour
         GUIManager.ShowCanvasGroupOverlap(QuikBewtGroup, false);
         loadingSlider.fillAmount = prog;
         bootCtx.text = "Loading Synthesizer... Done!";
+        AudioManager.Singleton.PlaySound("load-complete", 0.5f);
 
         // finalize boot
         yield return new WaitForSeconds(0.1f);
@@ -230,8 +234,10 @@ public class CoolantSynthesizer : MonoBehaviour
 
         closePopButton.onClick.AddListener(() =>
         {
+            AudioManager.Singleton.PlaySound("deny-button");
             popupRt.DOScale(0f, 0.3f).OnComplete(() =>
             {
+               
                 GUIManager.FadeCanvasGroup(PopupScreen, 0f, 0.3f);
             });
 
@@ -239,6 +245,8 @@ public class CoolantSynthesizer : MonoBehaviour
 
         acceptPopButton.onClick.AddListener(() =>
         {
+            AudioManager.Singleton.PlaySound("confirm-button");
+            AudioManager.Singleton.PlaySound("failed-audit", 0.2f);
             GUIManager.ShowCanvasGroupOverlap(BlueScreen, true);
         });
     }

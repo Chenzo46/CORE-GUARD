@@ -57,6 +57,8 @@ public class PlayerBase : MonoBehaviour
 
     private Item heldItem;
     private IInteractable mostRecentLookedAt;
+
+    private bool landSoundPlayed = true;
     
 
     private void Awake()
@@ -117,10 +119,30 @@ public class PlayerBase : MonoBehaviour
         moveVelocity += -moveVelocity * counterMovement * Time.deltaTime;
 
         _cc.Move(moveVelocity * Time.deltaTime);
+
+        MoveHorizontalAudio();
+    }
+
+    private void MoveHorizontalAudio()
+    {
+        if(moveInput.magnitude > 0 && IsGrounded())
+        {
+            AudioManager.Singleton.StartLoop("walk-loop", "Dissonant");
+        }
+        else
+        {
+            AudioManager.Singleton.StopLoop("walk-loop");
+        }
     }
 
     private void movementVertical()
     {
+        if(IsGrounded() && !landSoundPlayed && yVelocity <= 0)
+        {
+            landSoundPlayed = true;
+            AudioManager.Singleton.PlaySoundWorld("land", "Dissonant", transform.position, 0.15f, 0.3f);
+        }
+
         if (IsGrounded() && yVelocity <= 0)
         {
             yVelocity = -2f;
@@ -128,7 +150,9 @@ public class PlayerBase : MonoBehaviour
 
         if (JumpAction.WasPerformedThisFrame() && IsGrounded())
         {
+            AudioManager.Singleton.PlaySoundWorld("jump-up", "Dissonant", transform.position, 0.15f);
             yVelocity = Mathf.Sqrt(jumpStrength * -2f * gravity);
+            landSoundPlayed = false;
             
         }
         else if (JumpAction.WasReleasedThisFrame() && !IsGrounded() && yVelocity > 0)

@@ -25,6 +25,8 @@ public class WorldButton : Interactable
         if(isBeingPressed)
             return;
 
+        AudioManager.Singleton.PlaySoundWorld("button-press", transform.position);
+
         isBeingPressed = true;
 
         SetContext($"{GetContext()} (In Use...)");

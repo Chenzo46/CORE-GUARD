@@ -44,6 +44,7 @@ public class Item : Interactable
         if (!isHeld)
         {
             // hold
+            AudioManager.Singleton.PlaySound("grab-item", 0.3f);
             player = sender;
             _rb.isKinematic = true;
             _col.isTrigger = true;
@@ -73,6 +74,8 @@ public class Item : Interactable
 
         player.SetHeldItem(null);
         player = null;
+
+        AudioManager.Singleton.PlaySound("drop-item", 0.2f, 0.2f);
     }
 
     private void FollowHand()

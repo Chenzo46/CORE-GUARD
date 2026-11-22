@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 999cf81cfd7981e4ca1c5b2ad4673dcd, type: 3}
+  m_Name: ScriptableAudioListSettings
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableAudioListSettings
+  audioList:
+  - audioName: button-press
+    audioClip: {fileID: 8300000, guid: 31e2116dda0db84459c20dc75910a2f3, type: 3}
+  - audioName: test-ambience
+    audioClip: {fileID: 8300000, guid: 6480bc53c10311a41b9d15b494781486, type: 3}
+  - audioName: grab-item
+    audioClip: {fileID: 8300000, guid: 482bf9c87f0e7a844a6126cc7b3b4b25, type: 3}
+  - audioName: jump-up
+    audioClip: {fileID: 8300000, guid: 5ef483cce7d8de544beefd1426edfba5, type: 3}
+  - audioName: land
+    audioClip: {fileID: 8300000, guid: 028a1cff346ba9747937c8befe75234a, type: 3}
+  - audioName: walk-loop
+    audioClip: {fileID: 8300000, guid: 848feb0b0854cca44baf4c648eb7e69a, type: 3}
+  - audioName: deny-button
+    audioClip: {fileID: 8300000, guid: 0cecbf37f59d06745add570a63fe4a86, type: 3}
+  - audioName: confirm-button
+    audioClip: {fileID: 8300000, guid: 833a58d3a99c0d74f8abe5d38d3dc8b1, type: 3}
+  - audioName: load-complete
+    audioClip: {fileID: 8300000, guid: 28a4493c9d4d1a648842431bb601eb51, type: 3}
+  - audioName: failed-audit
+    audioClip: {fileID: 8300000, guid: 52e196a8a3ff3124a94c5118bcd08dc4, type: 3}
+  - audioName: plug-in
+    audioClip: {fileID: 8300000, guid: 226dc8f48e94aea43b07cd35927a6377, type: 3}
+  - audioName: plate-pop
+    audioClip: {fileID: 8300000, guid: eccecdd20fbd73e4f87870dbf0b346ae, type: 3}
+  - audioName: unscrew
+    audioClip: {fileID: 8300000, guid: de5f3a3bd46a960408b1b74a0cab4a14, type: 3}
+  - audioName: add-coolant
+    audioClip: {fileID: 8300000, guid: 89bd96f28f20bb64697f3e818a26c773, type: 3}
+  - audioName: coolant-correct
+    audioClip: {fileID: 8300000, guid: 6a58b71a4f06874419664fbcb373469b, type: 3}
+  - audioName: lever-use
+    audioClip: {fileID: 8300000, guid: 1e8f0f8d8c76c9e47a67c6cce537e153, type: 3}
+  - audioName: valve-rotate-loop
+    audioClip: {fileID: 8300000, guid: 8ca22c89e394bb4458ba5be0a8bc4244, type: 3}
+  - audioName: drop-item
+    audioClip: {fileID: 8300000, guid: eccecdd20fbd73e4f87870dbf0b346ae, type: 3}
+  - audioName: power-on
+    audioClip: {fileID: 8300000, guid: b6f6cb494388d634a94faf53cdbe11fb, type: 3}
+  - audioName: inject-status
+    audioClip: {fileID: 8300000, guid: 9829cdee3fb9a004ca8d60128d802f06, type: 3}
+  mixerGroupList:
+  - mixerGroupName: Master
+    mixerGroup: {fileID: 24300002, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}
+  - mixerGroupName: SFX
+    mixerGroup: {fileID: -7599074418463155735, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}
+  - mixerGroupName: MFX
+    mixerGroup: {fileID: 8399630864765113603, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}
+  - mixerGroupName: Dissonant
+    mixerGroup: {fileID: 2313802919664194241, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}

@@ -28,6 +28,17 @@ public class Rotatable : MonoBehaviour, IInteractable
     [SerializeField] private bool infiniteRotate = false;
     [SerializeField] private bool isInteractable = true;
 
+    [Header("Rotate Audio")]
+    [SerializeField] private float audioMaxVolume = 1f;
+    [SerializeField] private float minAudioSpeed = 5f;
+    [SerializeField] private float maxAudioSpeed = 180f;
+    [SerializeField] private float audioResponse = 12f;
+    [SerializeField] private Vector2 pitchRange = new Vector2(0.85f, 1.15f);
+
+    private float lastVisualZ;
+    private float smoothedSpeed;
+    private AudioSource rotateAudioSource = null;
+
     private void Awake()
     {
         moveActionMap = _ipa.FindActionMap("Movement");
@@ -56,6 +67,7 @@ public class Rotatable : MonoBehaviour, IInteractable
 
             Vector3 mousePos = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
 
             if (objectPlane.Raycast(ray, out float enterDistance))
             {
@@ -96,14 +108,27 @@ public class Rotatable : MonoBehaviour, IInteractable
                     Time.deltaTime * currentRotateStrength
                 );
                     
-                    
+                
 
                 previousGrabPos = grabPointRef.localPosition;
 
-                //Debug.Log($"Grab theta: {t1}, Previous theta: {t2}");
+                // Audio Loop
 
+                if (rotateAudioSource == null)
+                {
+                    rotateAudioSource = AudioManager.Singleton.GetFreeAudioSource("valve-rotate-loop");
+                    rotateAudioSource.volume = 0f;
+                    rotateAudioSource.Play();
+                    lastVisualZ = _referenceVisual.localEulerAngles.z;
+                    smoothedSpeed = 0f;
+                }
+
+                UpdateRotateAudio();
+
+                // Distance Check
                 if (Vector3.Distance(grabPointRef.position, transform.position) > maxGrabDistance)
                 {
+                    StopRotateAudio();
                     isGrabbing = false;
                     return;
                 }
@@ -111,8 +136,45 @@ public class Rotatable : MonoBehaviour, IInteractable
         }
         else
         {
+            StopRotateAudio();
             isGrabbing = false;
         }
+    }
+
+    private void UpdateRotateAudio()
+    {
+        float z = _referenceVisual.localEulerAngles.z;
+        float visualSpeed = Mathf.Abs(Mathf.DeltaAngle(lastVisualZ, z)) / Mathf.Max(Time.deltaTime, 0.0001f);
+        lastVisualZ = z;
+
+        // Frame-rate independent smoothing so tiny hitches don't make the sound flutter
+        smoothedSpeed = Mathf.Lerp(smoothedSpeed, visualSpeed, 1f - Mathf.Exp(-audioResponse * Time.deltaTime));
+
+        float t = Mathf.InverseLerp(minAudioSpeed, maxAudioSpeed, smoothedSpeed);
+
+        rotateAudioSource.volume = t * audioMaxVolume;
+        rotateAudioSource.pitch = Mathf.Lerp(pitchRange.x, pitchRange.y, t);
+    }
+
+    private void StopRotateAudio()
+    {
+        if (rotateAudioSource == null)
+            return;
+
+        AudioSource src = rotateAudioSource;
+        rotateAudioSource = null;
+
+        src.DOKill();
+        src.DOFade(0f, 0.3f).OnComplete(() =>
+        {
+            if (src != null)
+                Destroy(src.gameObject);
+        });
+    }
+
+    private void OnDisable()
+    {
+        StopRotateAudio();
     }
 
     private float GetCurrentRotateStrength()

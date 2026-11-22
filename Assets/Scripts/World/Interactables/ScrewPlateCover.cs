@@ -31,6 +31,9 @@ public class ScrewPlateCover : Interactable
             return;
 
         amountRemoved++;
+
+        AudioManager.Singleton.PlaySound("unscrew");
+
         Rigidbody currentScrew = screws[amountRemoved - 1];
         currentScrew.transform.DOLocalMoveZ(currentScrew.transform.localPosition.z + 0.1f, 0.3f);
         currentScrew.transform.DOLocalRotate(new Vector3(0, 0, 60), 0.3f).OnComplete(() => 
@@ -48,6 +51,8 @@ public class ScrewPlateCover : Interactable
                 Debug.Log("All screws removed.");
                 _plateRb.isKinematic = false;
                 _plateRb.AddForce(transform.forward * 5f, ForceMode.Impulse);
+
+                AudioManager.Singleton.PlaySound("plate-pop");
 
                 transform.DOScale(Vector3.zero, 0.5f).SetDelay(1f).OnComplete(() =>
                 {

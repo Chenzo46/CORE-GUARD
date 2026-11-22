@@ -9,6 +9,7 @@ public class Interactable : MonoBehaviour, IInteractable
     [Header("Interactable Settings")]
 
     [SerializeField] private string context = "Interactable Object";
+    [SerializeField] private string interactSound = string.Empty;
     [SerializeField] private bool singleInteraction = false;
     [SerializeField] private bool interactionEnabled = true;
     [SerializeField] private ItemConstraint itemConstraint;
@@ -41,6 +42,9 @@ public class Interactable : MonoBehaviour, IInteractable
             interactAction.Invoke(sender);
             OnInteractComplete?.Invoke();
             OnInteractCompleteUnity?.Invoke();
+            
+            if(!interactSound.Equals(string.Empty))
+                AudioManager.Singleton.PlaySoundWorld(interactSound, transform.position);
         }
 
     }

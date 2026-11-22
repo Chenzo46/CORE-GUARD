@@ -11,6 +11,8 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private CanvasGroup taskViewGroup;
     [SerializeField] private TMP_Text taskTitleLabel;
     [SerializeField] private TMP_Text taskStepDetailLabel;
+    [SerializeField] private RectTransform objectiveCursor;
+    [SerializeField] private float CursorRotSpeed = 1f;
 
     public static GUIManager Singleton;
     private CanvasGroup currentGroup;
@@ -26,6 +28,11 @@ public class GUIManager : MonoBehaviour
         {
             // for DontDestroyOnLoad
         }
+    }
+
+    private void Update()
+    {
+        objectiveCursor.Rotate(0,0,CursorRotSpeed * Time.deltaTime);
     }
 
     public void SetInteractableContext(string context)
@@ -94,6 +101,16 @@ public class GUIManager : MonoBehaviour
         }
 
         taskStepDetailLabel.text = steps;
+    }
+
+    public RectTransform GetObjectiveCursor()
+    {
+        return objectiveCursor;
+    }
+
+    public RectTransform GetCanvasRectTransform()
+    {
+        return GetComponent<RectTransform>();
     }
 
     public static bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)

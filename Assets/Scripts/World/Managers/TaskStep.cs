@@ -12,6 +12,8 @@ public class TaskStep : MonoBehaviour
     public Action FailAction;
     public UnityAction OnBecomeCurrent;
 
+    private bool flaggedAsCurrent = false;
+
     public enum TaskCompletionStatus
     {
         Completed,
@@ -22,7 +24,7 @@ public class TaskStep : MonoBehaviour
     {
         Listener.OnInteractComplete += CompleteStep;
 
-        if (!unordered)
+        if (!unordered && !flaggedAsCurrent)
         {
             Listener.SetInteractionEnabled(false);
         }
@@ -34,17 +36,20 @@ public class TaskStep : MonoBehaviour
 
         isComplete = true;
         CompleteAction?.Invoke();
+        flaggedAsCurrent = false;
     }
 
     public virtual void FailStep()
     {
         isComplete = false;
         FailAction?.Invoke();
+        flaggedAsCurrent = false;
     }
 
     public virtual void FlagAsCurrent()
     {
         OnBecomeCurrent?.Invoke();
+        flaggedAsCurrent = true;
         Listener.SetInteractionEnabled(true);
     }
 

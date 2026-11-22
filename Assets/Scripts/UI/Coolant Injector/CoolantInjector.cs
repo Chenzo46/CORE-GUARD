@@ -16,6 +16,8 @@ public class CoolantInjector : MonoBehaviour
     public Action OnCoolantInjected;
     private bool coolantInjected = false;
 
+    private int pIdx = 0;
+
     private void Awake()
     {
         CoolantInjectButton.onClick.AddListener(InjectCoolant);
@@ -34,6 +36,11 @@ public class CoolantInjector : MonoBehaviour
         for(int idx = 0; idx < pressureIndicator.Length; idx++)
         {
             pressureIndicator[idx].alpha = idx <= currentIdx ? 1 : 0;
+        }
+
+        if (pIdx != currentIdx)
+        {
+            AudioManager.Singleton.PlaySoundWorldPitchRamp("inject-status", transform.position, 1 + currentIdx * 0.15f);
         }
 
 
@@ -56,6 +63,8 @@ public class CoolantInjector : MonoBehaviour
             CoolantInjectButton.interactable = true;
         }
 
+        pIdx = currentIdx;
+
     }
 
     private int ConvertValveProgToIndex()
@@ -74,6 +83,8 @@ public class CoolantInjector : MonoBehaviour
     {
         if (coolantInjected)
             return;
+
+        AudioManager.Singleton.PlaySound("confirm-button");
 
         coolantInjected = true;
         OnCoolantInjected?.Invoke();
