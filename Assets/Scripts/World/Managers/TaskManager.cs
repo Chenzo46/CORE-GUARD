@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class TaskManager : MonoBehaviour
     private void Awake()
     {
         currentTask.InitializeTask();
+    }
+
+    private void Start()
+    {
+        GameStateManager.Singleton.OnTimerDepleted += FailCurrentStep;
     }
 
     public void CompleteCurrentStep()
@@ -54,6 +60,7 @@ public class Task
         if (stepIndex >= steps.Count)
         {
             Debug.Log("Task Complete!");
+            GameStateManager.Singleton.StopTimer();
         }
         else
         {
@@ -64,7 +71,7 @@ public class Task
 
     private void HandleStepFail()
     {
-        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 

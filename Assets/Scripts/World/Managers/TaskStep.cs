@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class TaskStep : MonoBehaviour
 {
@@ -8,8 +9,15 @@ public class TaskStep : MonoBehaviour
     public Interactable Listener;
     public Action CompleteAction;
     public Action FailAction;
+    public UnityAction OnBecomeCurrent;
 
-    private void Awake()
+    public enum TaskCompletionStatus
+    {
+        Completed,
+        Failed,
+    }
+
+    public virtual void Awake()
     {
         Listener.OnInteractComplete += CompleteStep;
 
@@ -19,7 +27,7 @@ public class TaskStep : MonoBehaviour
         }
     }
 
-    public void CompleteStep()
+    public virtual void CompleteStep()
     {
         Listener.OnInteractComplete -= CompleteStep;
 
@@ -27,14 +35,15 @@ public class TaskStep : MonoBehaviour
         CompleteAction?.Invoke();
     }
 
-    public void FailStep()
+    public virtual void FailStep()
     {
         isComplete = false;
         FailAction?.Invoke();
     }
 
-    public void FlagAsCurrent()
+    public virtual void FlagAsCurrent()
     {
+        OnBecomeCurrent?.Invoke();
         Listener.SetInteractionEnabled(true);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text interactCtxLabel;
+    [SerializeField] private TMP_Text interactCtxLabel, timerLabel;
     [SerializeField] private CanvasGroup baseHUDGroup;
     [SerializeField] private CanvasGroup monitorHUDGroup;
     public static GUIManager Singleton;
@@ -65,6 +65,14 @@ public class GUIManager : MonoBehaviour
             cg.blocksRaycasts = finalAlpha != 0f;
             cg.interactable = finalAlpha != 0f;
         });
+    }
+
+    public void SetTimer(float time)
+    {
+        int ms = (int)((time * 100) - (Mathf.Floor(time) * 100));
+        int s = (int)Mathf.Floor(time);
+
+        timerLabel.text = $"<mspace=0.7em>{s:D2}:{ms:D2}</mspace>";
     }
 
     public static bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)

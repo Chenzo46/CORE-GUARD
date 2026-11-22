@@ -42,7 +42,7 @@ public class Interactable : MonoBehaviour, IInteractable
             OnInteractComplete?.Invoke();
             OnInteractCompleteUnity?.Invoke();
         }
-            
+
     }
 
     public virtual string GetContext()
@@ -61,7 +61,7 @@ public class Interactable : MonoBehaviour, IInteractable
             return false;
 
         Item heldItem = sender.GetHeldItem();
-        return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType) 
+        return (itemConstraint.constraintActive && heldItem != null && heldItem.GetItemType() == itemConstraint.itemType)
             || (itemConstraint.constraintActive && itemConstraint.requireFreeHands && heldItem == null)
             || (!itemConstraint.constraintActive);
     }

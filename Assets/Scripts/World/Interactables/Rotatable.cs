@@ -26,6 +26,7 @@ public class Rotatable : MonoBehaviour, IInteractable
     [SerializeField] private float MAX_THETA_DISPLACE = 2000f;
 
     [SerializeField] private bool infiniteRotate = false;
+    [SerializeField] private bool isInteractable = true;
 
     private void Awake()
     {
@@ -42,7 +43,9 @@ public class Rotatable : MonoBehaviour, IInteractable
 
     private void HandleGrab()
     {
-        //Debug.Log(isLooking);
+        if (!isInteractable)
+            return;
+
         if (!isLooking && !isGrabbing)
             return;
 
@@ -157,11 +160,18 @@ public class Rotatable : MonoBehaviour, IInteractable
         this.isLooking = isLooking;
     }
 
+    public void UpdateIsInteractable(bool inter)
+    {
+        isInteractable = inter;
+    }
+
     public void OnDrawGizmos()
     {
+        /*
         Gizmos.color = isGrabbing ? Color.green : Color.red;
 
         
         Gizmos.DrawSphere(grabPointRef.position, 0.1f);
+        */
     }
 }

@@ -47,11 +47,20 @@ public class CoolantSynthesizer : MonoBehaviour
     private InputActionMap monitorActionMap;
     private InputAction quickBootAction;
 
+    private CoolantStatus coolantStatus = CoolantStatus.Incomplete;
+
     private enum CoolantMaterialType
     {
         Water,
         Fire,
         Ice
+    }
+
+    public enum CoolantStatus
+    {
+        Incomplete,
+        Incorrect,
+        Complete
     }
 
     private void Awake()
@@ -112,11 +121,19 @@ public class CoolantSynthesizer : MonoBehaviour
             if (!materialInputs.ContainsKey(type) || materialInputs[type] != coolantRecipe[type])
             {
                 Debug.Log("Lose Condition Triggered");
+                coolantStatus = CoolantStatus.Incorrect;
                 return;
             }
         }
 
+        GUIManager.FadeCanvasGroup(CompleteScreen, 1f, 0.1f);
+        coolantStatus = CoolantStatus.Complete;
         Debug.Log("Coolant Finalized");
+    }
+
+    public CoolantStatus GetCoolantStatus()
+    {
+        return coolantStatus;
     }
 
     private void ConvertListToRecipe()

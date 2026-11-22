@@ -71,6 +71,8 @@ public class PlayerBase : MonoBehaviour
         dropAction = moveActionMap.FindAction("Drop");
         useAction = moveActionMap.FindAction("Use");
 
+        moveActionMap.Enable();
+
         rotateY = Camera.main.transform.eulerAngles.y;
         rotateX = Camera.main.transform.eulerAngles.x;
 
