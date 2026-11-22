@@ -79,16 +79,21 @@ public class GUIManager : MonoBehaviour
         timerLabel.text = $"<mspace=0.7em>{s:D2}:{ms:D2}</mspace>";
     }
 
-    public void UpdateTaskView(TaskManager tm)
+    public void UpdateTaskView(Task tm)
     {
-        taskTitleLabel.text = tm.GetTaskName();
+        taskTitleLabel.text = tm.taskName;
 
         string steps = ""; // only add current and old tasks
 
-        for(int idx = 0; idx < tm.currentTask.GetStepIndex()+1; idx++)
+        for(int idx = 0; idx < tm.GetStepIndex()+1; idx++)
         {
-            //steps += $"- {tm.currentTask.}\n";
+            if (idx >= tm.steps.Count)
+                break;
+
+            steps += $"- {tm.steps[idx].GetDescription()}\n";
         }
+
+        taskStepDetailLabel.text = steps;
     }
 
     public static bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)

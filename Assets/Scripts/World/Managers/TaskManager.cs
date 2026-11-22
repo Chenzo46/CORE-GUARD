@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
-    [SerializeField] private string taskName;
     public Task currentTask;
 
     private void Awake()
@@ -27,16 +26,12 @@ public class TaskManager : MonoBehaviour
     {
         currentTask.currentStep.FailStep();
     }
-
-    public string GetTaskName()
-    {
-        return taskName;
-    }
 }
 
 [System.Serializable]
 public class Task
 {
+    public string taskName;
     public List<TaskStep> steps;
     public TaskStep currentStep => steps[stepIndex];
     private int stepIndex = 0;
@@ -51,6 +46,8 @@ public class Task
         currentStep.CompleteAction += HandleStepComplete;
         currentStep.FailAction += HandleStepFail;
 
+        GUIManager.Singleton.UpdateTaskView(this);
+
         currentStep.FlagAsCurrent();
 
         if (currentStep.isComplete)
@@ -63,6 +60,9 @@ public class Task
         currentStep.FailAction -= HandleStepFail;
 
         stepIndex++;
+
+        GUIManager.Singleton.UpdateTaskView(this);
+
         if (stepIndex >= steps.Count)
         {
             Debug.Log("Task Complete!");

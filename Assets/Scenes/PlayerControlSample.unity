@@ -478,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f81329fafc33b45bfce0dacb5439ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStep
-  taskDescription: 
+  taskDescription: Turn Coolant Synthesizer On
   isComplete: 0
   unordered: 0
   Listener: {fileID: 42815559}
@@ -3595,6 +3595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskManager
   currentTask:
+    taskName: Test
     steps:
     - {fileID: 128935094}
     - {fileID: 1626717149}
@@ -5098,7 +5099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29fb64fdc54c5428d225485c794460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStepAbstract
-  taskDescription: 
+  taskDescription: Synthesize new coolant
   isComplete: 0
   unordered: 0
   Listener: {fileID: 0}
@@ -5808,7 +5809,7 @@ MonoBehaviour:
   OnSwitchOn:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7936576108227046124}
         m_TargetAssemblyTypeName: CoolantInjector, Assembly-CSharp
         m_MethodName: HideCoolantWarning
         m_Mode: 1
@@ -5835,7 +5836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f81329fafc33b45bfce0dacb5439ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStep
-  taskDescription: 
+  taskDescription: Send Coolant from Synthesizer to Injector
   isComplete: 0
   unordered: 0
   Listener: {fileID: 558496075}
@@ -7658,6 +7659,9 @@ MonoBehaviour:
   timerLabel: {fileID: 347880817}
   baseHUDGroup: {fileID: 392560799}
   monitorHUDGroup: {fileID: 290068939}
+  taskViewGroup: {fileID: 1118882456}
+  taskTitleLabel: {fileID: 498220848}
+  taskStepDetailLabel: {fileID: 2104463937}
 --- !u!1 &754867234
 GameObject:
   m_ObjectHideFlags: 0
@@ -8817,6 +8821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskManager
   currentTask:
+    taskName: Fix Coolant
     steps:
     - {fileID: 9099818784441541182}
     - {fileID: 2137522688}
@@ -15457,6 +15462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskManager
   currentTask:
+    taskName: Fix Boolant
     steps:
     - {fileID: 9099818784441541182}
 --- !u!4 &1825149181
@@ -18773,7 +18779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f81329fafc33b45bfce0dacb5439ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStep
-  taskDescription: 
+  taskDescription: Plug In Coolant Synthesizer
   isComplete: 0
   unordered: 0
   Listener: {fileID: 2137522684}
@@ -20666,7 +20672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29fb64fdc54c5428d225485c794460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStepAbstract
-  taskDescription: 
+  taskDescription: Adjust Coolant Coolant Pressure and Inject Coolant
   isComplete: 0
   unordered: 0
   Listener: {fileID: 0}
@@ -20939,7 +20945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29fb64fdc54c5428d225485c794460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskStepAbstract
-  taskDescription: 
+  taskDescription: Unscrew Outlet Cover
   isComplete: 0
   unordered: 0
   Listener: {fileID: 0}
