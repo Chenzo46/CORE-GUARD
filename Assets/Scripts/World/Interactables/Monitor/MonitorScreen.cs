@@ -24,6 +24,10 @@ public class MonitorScreen : Interactable
     [SerializeField] private float sensitivity = 0.5f;
     [SerializeField] private float gamepadSensitivityScale = 2000;
     [SerializeField, Range(0.1f, 1f)] private float hitboxScale = 0.5f;
+    [SerializeField, Range(1, 5)] private int samplesPerAxis = 3;
+
+    private GraphicRaycaster raycaster;
+    private readonly List<RaycastResult> raycastResults = new();
     private InputActionMap monitorActionMap, movementActionMap;
     private InputAction dragCursorAction;
     private InputAction leftClickAction;
@@ -66,6 +70,8 @@ public class MonitorScreen : Interactable
         canvasRect = monitorCanvas.GetComponent<RectTransform>();
         renderCamera = monitorCanvas.worldCamera;
         uiModule = FindFirstObjectByType<InputSystemUIInputModule>();
+
+        raycaster = monitorCanvas.GetComponent<GraphicRaycaster>();
 
         RefreshSelectables();
 
@@ -237,9 +243,40 @@ public class MonitorScreen : Interactable
         return r;
     }
 
+    private static Rect Intersection(Rect a, Rect b)
+    {
+        return Rect.MinMaxRect(
+            Mathf.Max(a.xMin, b.xMin), Mathf.Max(a.yMin, b.yMin),
+            Mathf.Min(a.xMax, b.xMax), Mathf.Min(a.yMax, b.yMax));
+    }
+    
+    private bool IsTopAtAnySample(Selectable s, Rect area)
+    {
+        for (int ix = 0; ix < samplesPerAxis; ix++)
+        {
+            for (int iy = 0; iy < samplesPerAxis; iy++)
+            {
+                Vector2 local = new Vector2(
+                    Mathf.Lerp(area.xMin, area.xMax, (ix + 0.5f) / samplesPerAxis),
+                    Mathf.Lerp(area.yMin, area.yMax, (iy + 0.5f) / samplesPerAxis));
+
+                Vector3 world = canvasRect.TransformPoint(local);
+                pointer.position = RectTransformUtility.WorldToScreenPoint(renderCamera, world);
+
+                raycastResults.Clear();
+                raycaster.Raycast(pointer, raycastResults);
+                if (raycastResults.Count == 0) continue;
+
+                Selectable owner = raycastResults[0].gameObject.GetComponentInParent<Selectable>();
+                if (owner == s) return true;
+            }
+        }
+        return false;
+    }
+
     private void UpdateHover(Vector2 delta)
     {
-        pointer.position = RectTransformUtility.WorldToScreenPoint(renderCamera, cursor.position);
+        Vector2 cursorScreenPoint = RectTransformUtility.WorldToScreenPoint(renderCamera, cursor.position);
         pointer.delta = delta;
 
         Rect hitbox = GetCursorHitbox();
@@ -255,11 +292,15 @@ public class MonitorScreen : Interactable
             Rect r = GetCanvasSpaceRect((RectTransform)s.transform);
             if (!r.Overlaps(hitbox)) continue;
 
+            if (!IsTopAtAnySample(s, Intersection(r, hitbox))) continue;
+
             nextHovered.Add(s.gameObject);
 
             float dist = (r.center - hitbox.center).sqrMagnitude;
             if (dist < closest) { closest = dist; clickTarget = s.gameObject; }
         }
+
+        pointer.position = cursorScreenPoint;
 
         exitBuffer.Clear();
         foreach (GameObject go in hoveredSet)
@@ -275,7 +316,6 @@ public class MonitorScreen : Interactable
             if (hoveredSet.Add(go))
                 ExecuteEvents.Execute(go, pointer, ExecuteEvents.pointerEnterHandler);
     }
-
     private void OnClickDown(InputAction.CallbackContext ctx)
     {
         if (!isFoucsed || clickTarget == null) return;

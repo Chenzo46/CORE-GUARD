@@ -25,7 +25,9 @@ public class CoolantSynthesizer : MonoBehaviour
     [SerializeField] private CanvasGroup CompleteScreen;
     [SerializeField] private CanvasGroup PopupScreen;
     [SerializeField] private CanvasGroup PopupWindow;
+    [SerializeField] private CanvasGroup BlueScreen;
     [SerializeField] private Button closePopButton;
+    [SerializeField] private Button acceptPopButton;
 
 
     // Boot screen variables
@@ -233,6 +235,11 @@ public class CoolantSynthesizer : MonoBehaviour
                 GUIManager.FadeCanvasGroup(PopupScreen, 0f, 0.3f);
             });
 
+        });
+
+        acceptPopButton.onClick.AddListener(() =>
+        {
+            GUIManager.ShowCanvasGroupOverlap(BlueScreen, true);
         });
     }
 }

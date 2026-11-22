@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
@@ -17,6 +18,8 @@ public class Item : Interactable
     private Vector3 dampRef;
     [Header("Item Settings")]
     [SerializeField] private ItemType itemType = ItemType.None;
+    [SerializeField] private float outOfBoundsOffset = 0.5f;
+    [SerializeField] private LayerMask outOfBoundsExclude;
 
 
     public override void Awake()
@@ -66,6 +69,8 @@ public class Item : Interactable
         gameObject.layer = WORLD_LAYER;
         _rb.linearVelocity = player.GetPlayerVelocity();
 
+        HandleOutOfBounds();
+
         player.SetHeldItem(null);
         player = null;
     }
@@ -79,6 +84,21 @@ public class Item : Interactable
         Quaternion.Slerp(transform.rotation, player.GetHandTransform().rotation, handRotateStrength * Time.deltaTime));
     }
 
+    private void HandleOutOfBounds()
+    {
+        RaycastHit rh;
+
+        if (Physics.Linecast(player.transform.position, transform.position, out rh))
+        {
+            if (IsLayerInMask(rh.transform.gameObject.layer, outOfBoundsExclude))
+                return;
+
+            Vector3 playerDir = (transform.position - player.transform.position).normalized;
+
+            transform.position = rh.point - playerDir * outOfBoundsOffset;
+        }
+    }
+
     public virtual void UseActionFunction()
     {
         Debug.Log($"{GetContext()} used");
@@ -89,13 +109,19 @@ public class Item : Interactable
     {
         return itemType;
     }
+
+    private bool IsLayerInMask(int layer, LayerMask lm)
+    {
+        return (lm.value & (1 << layer)) != 0;
+
+    }
 }
 
-public enum ItemType
-{
-    None,
-    Screwdriver,
-    Broom,
+    public enum ItemType
+    {       
+        None,
+        Screwdriver,
+        Broom,
 
-    Plug,
-}
+        Plug,
+    }
