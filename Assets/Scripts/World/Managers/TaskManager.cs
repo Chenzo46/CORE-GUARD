@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
+    [SerializeField] private string taskName;
     public Task currentTask;
 
     private void Awake()
@@ -25,6 +26,11 @@ public class TaskManager : MonoBehaviour
     public void FailCurrentStep()
     {
         currentTask.currentStep.FailStep();
+    }
+
+    public string GetTaskName()
+    {
+        return taskName;
     }
 }
 
@@ -72,6 +78,11 @@ public class Task
     private void HandleStepFail()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public int GetStepIndex()
+    {
+        return stepIndex;
     }
 }
 

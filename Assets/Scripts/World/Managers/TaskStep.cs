@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class TaskStep : MonoBehaviour
 {
+    public string taskDescription = "";
     public bool isComplete = false;
     public bool unordered = true;
     public Interactable Listener;
@@ -45,5 +46,10 @@ public class TaskStep : MonoBehaviour
     {
         OnBecomeCurrent?.Invoke();
         Listener.SetInteractionEnabled(true);
+    }
+
+    public virtual string GetDescription()
+    {
+        return taskDescription;
     }
 }

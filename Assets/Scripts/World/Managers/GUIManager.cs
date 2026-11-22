@@ -7,8 +7,12 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private TMP_Text interactCtxLabel, timerLabel;
     [SerializeField] private CanvasGroup baseHUDGroup;
     [SerializeField] private CanvasGroup monitorHUDGroup;
-    public static GUIManager Singleton;
+    [Header("Task Manager Properties")]
+    [SerializeField] private CanvasGroup taskViewGroup;
+    [SerializeField] private TMP_Text taskTitleLabel;
+    [SerializeField] private TMP_Text taskStepDetailLabel;
 
+    public static GUIManager Singleton;
     private CanvasGroup currentGroup;
 
     private void Awake()
@@ -73,6 +77,18 @@ public class GUIManager : MonoBehaviour
         int s = (int)Mathf.Floor(time);
 
         timerLabel.text = $"<mspace=0.7em>{s:D2}:{ms:D2}</mspace>";
+    }
+
+    public void UpdateTaskView(TaskManager tm)
+    {
+        taskTitleLabel.text = tm.GetTaskName();
+
+        string steps = ""; // only add current and old tasks
+
+        for(int idx = 0; idx < tm.currentTask.GetStepIndex()+1; idx++)
+        {
+            //steps += $"- {tm.currentTask.}\n";
+        }
     }
 
     public static bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)

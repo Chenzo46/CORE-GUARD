@@ -66,8 +66,6 @@ public class GameStateManager : MonoBehaviour
 
         timer = 0f;
         GUIManager.Singleton.SetTimer(timer);
-
-        // Lose Condition goes here
     }
 
     public void StopTimer()
