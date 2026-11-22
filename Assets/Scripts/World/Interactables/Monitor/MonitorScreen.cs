@@ -23,21 +23,26 @@ public class MonitorScreen : Interactable
     [SerializeField] private Canvas monitorCanvas;
     [SerializeField] private float sensitivity = 0.5f;
     [SerializeField] private float gamepadSensitivityScale = 2000;
+    [SerializeField, Range(0.1f, 1f)] private float hitboxScale = 0.5f;
     private InputActionMap monitorActionMap, movementActionMap;
     private InputAction dragCursorAction;
     private InputAction leftClickAction;
     private InputAction leaveAction;
 
     private RectTransform canvasRect;
-    private GraphicRaycaster raycaster;
+
     private PointerEventData pointer;
-    private readonly List<RaycastResult> results = new();
 
     private Camera renderCamera;                    
     private InputSystemUIInputModule uiModule;
-    private GameObject hitObject;
-    private GameObject hovered; 
     private GameObject pressed;
+
+    private List<Selectable> selectables = new();
+    private HashSet<GameObject> hoveredSet = new();
+    private HashSet<GameObject> nextHovered = new();
+    private List<GameObject> exitBuffer = new();
+    private Vector3[] corners = new Vector3[4];
+    private GameObject clickTarget;
 
     private bool isFoucsed = false;
 
@@ -59,12 +64,10 @@ public class MonitorScreen : Interactable
         InitializeInputActions();
 
         canvasRect = monitorCanvas.GetComponent<RectTransform>();
-        raycaster = monitorCanvas.GetComponent<GraphicRaycaster>();
         renderCamera = monitorCanvas.worldCamera;
         uiModule = FindFirstObjectByType<InputSystemUIInputModule>();
 
-        if (renderCamera == null)
-            Debug.LogError("MonitorScreen: set the monitor canvas's Render Camera to the RenderTexture camera.", this);
+        RefreshSelectables();
 
         foreach (Graphic g in cursor.GetComponentsInChildren<Graphic>())
             g.raycastTarget = false;
@@ -211,58 +214,80 @@ public class MonitorScreen : Interactable
         cursor.anchoredPosition = p;
     }
 
+    public void RefreshSelectables()
+    {
+        selectables.Clear();
+        monitorCanvas.GetComponentsInChildren(true, selectables);
+    }
+
+    private Rect GetCanvasSpaceRect(RectTransform rt)
+    {
+        rt.GetWorldCorners(corners);
+        Vector3 min = canvasRect.InverseTransformPoint(corners[0]);
+        Vector3 max = canvasRect.InverseTransformPoint(corners[2]);
+        return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+    }
+
+    private Rect GetCursorHitbox()
+    {
+        Rect r = GetCanvasSpaceRect(cursor);
+        Vector2 center = r.center;
+        r.size *= hitboxScale;
+        r.center = center;
+        return r;
+    }
 
     private void UpdateHover(Vector2 delta)
     {
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(renderCamera, cursor.position);
-
-        pointer.position = screenPoint;
+        pointer.position = RectTransformUtility.WorldToScreenPoint(renderCamera, cursor.position);
         pointer.delta = delta;
 
-        results.Clear();
-        raycaster.Raycast(pointer, results);
+        Rect hitbox = GetCursorHitbox();
 
-        if (results.Count > 0)
+        nextHovered.Clear();
+        clickTarget = null;
+        float closest = float.MaxValue;
+
+        foreach (Selectable s in selectables)
         {
-            pointer.pointerCurrentRaycast = results[0];
-            hitObject = results[0].gameObject;
+            if (!s || !s.gameObject.activeInHierarchy || !s.IsInteractable()) continue;
+
+            Rect r = GetCanvasSpaceRect((RectTransform)s.transform);
+            if (!r.Overlaps(hitbox)) continue;
+
+            nextHovered.Add(s.gameObject);
+
+            float dist = (r.center - hitbox.center).sqrMagnitude;
+            if (dist < closest) { closest = dist; clickTarget = s.gameObject; }
         }
-        else
+
+        exitBuffer.Clear();
+        foreach (GameObject go in hoveredSet)
+            if (!go || !nextHovered.Contains(go)) exitBuffer.Add(go);
+
+        foreach (GameObject go in exitBuffer)
         {
-            pointer.pointerCurrentRaycast = new RaycastResult();
-            hitObject = null;
+            hoveredSet.Remove(go);
+            if (go) ExecuteEvents.Execute(go, pointer, ExecuteEvents.pointerExitHandler);
         }
 
-        GameObject target = hitObject ? ExecuteEvents.GetEventHandler<IPointerEnterHandler>(hitObject) : null;
-
-        if (target != hovered)
-        {
-            ExitHover();
-            hovered = target;
-            if (hovered) ExecuteEvents.Execute(hovered, pointer, ExecuteEvents.pointerEnterHandler);
-        }
-    }
-
-    private void ExitHover()
-    {
-        if (hovered) ExecuteEvents.Execute(hovered, pointer, ExecuteEvents.pointerExitHandler);
-        hovered = null;
+        foreach (GameObject go in nextHovered)
+            if (hoveredSet.Add(go))
+                ExecuteEvents.Execute(go, pointer, ExecuteEvents.pointerEnterHandler);
     }
 
     private void OnClickDown(InputAction.CallbackContext ctx)
     {
-        if (!isFoucsed || hitObject == null) return;
+        if (!isFoucsed || clickTarget == null) return;
 
         pointer.pressPosition = pointer.position;
-        pointer.pointerPressRaycast = pointer.pointerCurrentRaycast;
         pointer.eligibleForClick = true;
 
-        pressed = ExecuteEvents.ExecuteHierarchy(hitObject, pointer, ExecuteEvents.pointerDownHandler);
-        if (pressed == null)
-            pressed = ExecuteEvents.GetEventHandler<IPointerClickHandler>(hitObject);
-
+        pressed = clickTarget;
         pointer.pointerPress = pressed;
-        pointer.rawPointerPress = hitObject;
+        pointer.rawPointerPress = pressed;
+
+        ExecuteEvents.Execute(pressed, pointer, ExecuteEvents.pointerDownHandler);
     }
 
     private void OnClickUp(InputAction.CallbackContext ctx)
@@ -271,9 +296,7 @@ public class MonitorScreen : Interactable
 
         ExecuteEvents.Execute(pressed, pointer, ExecuteEvents.pointerUpHandler);
 
-        // Only a click if released over the same thing we pressed
-        GameObject clickTarget = ExecuteEvents.GetEventHandler<IPointerClickHandler>(hitObject);
-        if (clickTarget == pressed)
+        if (hoveredSet.Contains(pressed))
             ExecuteEvents.Execute(pressed, pointer, ExecuteEvents.pointerClickHandler);
 
         pressed = null;
@@ -289,8 +312,12 @@ public class MonitorScreen : Interactable
             ExecuteEvents.Execute(pressed, pointer, ExecuteEvents.pointerUpHandler);
             pressed = null;
         }
-        ExitHover();
-        hitObject = null;
+
+        foreach (GameObject go in hoveredSet)
+            if (go) ExecuteEvents.Execute(go, pointer, ExecuteEvents.pointerExitHandler);
+
+        hoveredSet.Clear();
+        clickTarget = null;
     }
 
     public void TurnMonitorOn()

@@ -7,6 +7,7 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Singleton;
 
     [SerializeField] private float timer = 20f;
+    [SerializeField] private bool startTimerOnAwake = false;
 
     private bool timerStarted = false;
 
@@ -31,7 +32,9 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         initalTimer = timer;
-        StartTimer();
+
+        if(startTimerOnAwake)
+            StartTimer();
     }
 
     public void StartTimer()
