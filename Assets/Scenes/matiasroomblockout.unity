@@ -479,7 +479,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9ee6b474eddbb204b87d139ec0eaf2d6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66a59a65f90dbec4a80556eed82b971f, type: 2}
+      objectReference: {fileID: 2100000, guid: ea043c0b57c9bcb4cbdc3f3c5e8c244d, type: 2}
     - target: {fileID: 919132149155446097, guid: 9ee6b474eddbb204b87d139ec0eaf2d6, type: 3}
       propertyPath: m_Name
       value: Gear
@@ -5298,6 +5298,7 @@ MonoBehaviour:
   timerLabel: {fileID: 0}
   baseHUDGroup: {fileID: 392560799}
   monitorHUDGroup: {fileID: 290068939}
+  transitionGroup: {fileID: 0}
   taskViewGroup: {fileID: 0}
   taskTitleLabel: {fileID: 0}
   taskStepDetailLabel: {fileID: 0}
