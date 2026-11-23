@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-using System.Linq;
+using System.Collections;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -33,6 +32,7 @@ public class PlayerBase : MonoBehaviour
     [SerializeField] private LayerMask interactableMask;
     //Input Actions
     private InputActionMap moveActionMap;
+    private InputActionMap monitorActionMap;
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction JumpAction;
@@ -67,6 +67,7 @@ public class PlayerBase : MonoBehaviour
 
         //Movement Action map
         moveActionMap = playerActionMap.FindActionMap("Movement");
+        monitorActionMap = playerActionMap.FindActionMap("Monitor");
         moveAction = moveActionMap.FindAction("Move");
         lookAction = moveActionMap.FindAction("Look");
         JumpAction = moveActionMap.FindAction("Jump");
@@ -87,6 +88,7 @@ public class PlayerBase : MonoBehaviour
     private void Start()
     {
         heldItemTransform.parent = Camera.main.transform;
+        SetupCamera();
     }
     private void Update()
     {
@@ -191,6 +193,15 @@ public class PlayerBase : MonoBehaviour
 
         Camera.main.transform.rotation = Quaternion.Euler(rotateX, rotateY, Camera.main.transform.eulerAngles.z);
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, rotateY, transform.rotation.eulerAngles.z);
+    }
+
+    public void SetupCamera()
+    {
+        Camera.main.transform.position = eyeLevelTransform.position;
+        Camera.main.transform.rotation = eyeLevelTransform.rotation;
+
+        rotateX = eyeLevelTransform.eulerAngles.x;
+        rotateY = eyeLevelTransform.eulerAngles.y;
     }
 
     private void LookingAtInteractable()
@@ -301,6 +312,49 @@ public class PlayerBase : MonoBehaviour
     public Vector3 GetPlayerVelocity()
     {
         return moveVelocity + Vector3.up * yVelocity;
+    }
+
+    public void ToggleInput(bool inputAllowed)
+    {
+        if (inputAllowed)
+        {
+            moveActionMap.Enable();
+        }
+        else
+        {
+            moveActionMap.Disable();
+            monitorActionMap.Disable();
+        }
+    }
+
+    public void ShakeCamera(float duration, float intensity, bool local = true) // Appropriate values for intensity should stay under 1
+    {
+        StartCoroutine(CameraShakeRoutine(duration, intensity, local));
+    }
+
+    private IEnumerator CameraShakeRoutine(float duration, float intensity, bool local)
+    {
+        float currentDur = duration;
+
+        Transform camTransform = local ? eyeLevelTransform : Camera.main.transform;
+        Vector3 orgCamPos = camTransform.localPosition;
+
+        Debug.Log("Camera Shake Started");
+
+        while (currentDur > 0)
+        {
+            Vector3 horizontalDisplace = camTransform.right * Random.Range(-intensity, intensity);
+            Vector3 verticalDisplace = camTransform.up * Random.Range(-intensity, intensity);
+
+            camTransform.localPosition = orgCamPos + horizontalDisplace + verticalDisplace;
+
+            currentDur -= Time.deltaTime;
+            yield return null;
+        }
+
+        camTransform.localPosition = orgCamPos;
+
+        Debug.Log("Camera Shake Finished");
     }
 
     void OnDrawGizmos()

@@ -7,6 +7,7 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private TMP_Text interactCtxLabel, timerLabel;
     [SerializeField] private CanvasGroup baseHUDGroup;
     [SerializeField] private CanvasGroup monitorHUDGroup;
+    [SerializeField] private CanvasGroup transitionGroup;
     [Header("Task Manager Properties")]
     [SerializeField] private CanvasGroup taskViewGroup;
     [SerializeField] private TMP_Text taskTitleLabel;
@@ -101,6 +102,17 @@ public class GUIManager : MonoBehaviour
         }
 
         taskStepDetailLabel.text = steps;
+    }
+
+    public void FadeSceneIn(float duration)
+    {
+        ShowCanvasGroup(transitionGroup, true);
+        FadeCanvasGroup(transitionGroup, 0f, duration);
+    }
+
+    public void FadeSceneOut(float duration)
+    {
+        FadeCanvasGroup(transitionGroup, 1f, duration);
     }
 
     public RectTransform GetObjectiveCursor()

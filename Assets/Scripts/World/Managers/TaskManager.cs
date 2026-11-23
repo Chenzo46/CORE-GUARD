@@ -156,7 +156,7 @@ public class Task
 
     private void HandleStepFail()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneSetter.Singleton.LoseGame();
     }
 
     public int GetStepIndex()

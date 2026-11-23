@@ -55,6 +55,12 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 9829cdee3fb9a004ca8d60128d802f06, type: 3}
   - audioName: metal-door
     audioClip: {fileID: 8300000, guid: b062a4d418210ca4bb8aac2097f4a92e, type: 3}
+  - audioName: elevator-stop
+    audioClip: {fileID: 8300000, guid: 3dfb7e5b31a19494dacc9b5c7dda655a, type: 3}
+  - audioName: core-explode
+    audioClip: {fileID: 8300000, guid: 795e5733319d86b42b2de64e13665447, type: 3}
+  - audioName: elevator-ding
+    audioClip: {fileID: 8300000, guid: bdc777e4281019143b8dc2af417073c9, type: 3}
   mixerGroupList:
   - mixerGroupName: Master
     mixerGroup: {fileID: 24300002, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}

@@ -25,7 +25,7 @@ public class Cable : MonoBehaviour
 
     public void PlugIn()
     {
-        if(isPluggedIn)
+        if (isPluggedIn)
             return;
 
         AudioManager.Singleton.PlaySound("plug-in");
