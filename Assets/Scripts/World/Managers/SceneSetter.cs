@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ public class SceneSetter : MonoBehaviour
 {
     [SerializeField] private PlayerBase plr;
     [SerializeField] private Transform plrSpawn;
+
+    [SerializeField] private Transform elevatorDoorLeft, elevatorDoorRight;
 
     public static SceneSetter Singleton;
 
@@ -39,6 +42,9 @@ public class SceneSetter : MonoBehaviour
 
         plr.ToggleInput(true);
 
+        elevatorDoorLeft.DOLocalMoveZ(0.8f, 1f).SetEase(Ease.InOutQuart);
+        elevatorDoorRight.DOLocalMoveZ(-0.8f, 1f).SetEase(Ease.InOutQuart);
+
         // fade screen from white
         // Persistent Camera Shake
         // Elevator music + elevator moving sound
@@ -47,8 +53,6 @@ public class SceneSetter : MonoBehaviour
         // Elevator door opens
 
         yield return null;
-
-        GameStateManager.Singleton.StartTimer(); // temporary
     }
 
     public void LoseGame()
@@ -73,5 +77,10 @@ public class SceneSetter : MonoBehaviour
         yield return null;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void StartSceneTimer()
+    {
+        GameStateManager.Singleton.StartTimer();
     }
 }

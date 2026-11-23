@@ -1,9 +1,22 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: bbbc6fb8bf19f194d800357fe3738caa
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
   externalObjects: {}
+=======
+guid: 0703ffe3f1d8e184780df09ce15250bf
+ModelImporter:
+  serializedVersion: 24300
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: openPBR_shader1
+    second: {fileID: 2100000, guid: 7a0139ede582e54479abc0a8c351c49c, type: 2}
+>>>>>>> Stashed changes
   materials:
     materialImportMode: 2
     materialName: 0
@@ -92,7 +105,11 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+<<<<<<< Updated upstream
     globalScale: 1
+=======
+    globalScale: 100
+>>>>>>> Stashed changes
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
