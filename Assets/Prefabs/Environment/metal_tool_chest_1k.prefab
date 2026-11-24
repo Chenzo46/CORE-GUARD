@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 55271694550070684}
   - component: {fileID: 7254733875133190753}
   - component: {fileID: 991482434572814004}
-  - component: {fileID: 7067837074183838694}
+  - component: {fileID: 194648306807962300}
   m_Layer: 7
   m_Name: metal_tool_chest
   m_TagString: Untagged
@@ -399,8 +399,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7067837074183838694
-MeshCollider:
+--- !u!65 &194648306807962300
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -417,10 +417,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 9134977097670620818, guid: 2fda2781c05ff3f4dab855f1b7e35543, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.013707767, y: 0.0063131023, z: 0.0059297136}
+  m_Center: {x: -0.0000000011976987, y: 0.000061434155, z: -0.0008351437}
 --- !u!1 &2840753892670879202
 GameObject:
   m_ObjectHideFlags: 0

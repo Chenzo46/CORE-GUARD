@@ -182,9 +182,9 @@ public class PlayerBase : MonoBehaviour
         InputDevice device = lookAction.activeControl?.device;
 
         if (device is Gamepad)
-            delta = lookDir * lookSensitivity * gamepadSensitivityScale * Time.deltaTime;
+            delta = lookDir * lookSensitivity * PlayerPrefs.GetFloat("look_sense") * gamepadSensitivityScale * Time.deltaTime;
         else
-            delta = lookDir * lookSensitivity;
+            delta = lookDir * lookSensitivity * PlayerPrefs.GetFloat("look_sense");
 
         rotateX -= delta.y;
         rotateY += delta.x;

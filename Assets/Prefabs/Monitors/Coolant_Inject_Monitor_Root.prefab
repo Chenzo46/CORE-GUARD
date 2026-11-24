@@ -939,8 +939,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: NO COOLANT DETECTED
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9703127d6eda91945a6b125b7aa9f21d, type: 2}
-  m_sharedMaterial: {fileID: 2563782106708828697, guid: 9703127d6eda91945a6b125b7aa9f21d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 288a1ea7d68ce9f4d9e70c6bccf33d75, type: 2}
+  m_sharedMaterial: {fileID: 2926027714516183179, guid: 288a1ea7d68ce9f4d9e70c6bccf33d75, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

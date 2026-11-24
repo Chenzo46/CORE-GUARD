@@ -206,9 +206,9 @@ public class MonitorScreen : Interactable
         InputDevice device = dragCursorAction.activeControl?.device;
 
         if (device is Gamepad)
-            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity * gamepadSensitivityScale * Time.deltaTime;
+            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity * PlayerPrefs.GetFloat("monitor_sense") * gamepadSensitivityScale * Time.deltaTime;
         else
-            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity;
+            delta = dragCursorAction.ReadValue<Vector2>() * sensitivity * PlayerPrefs.GetFloat("monitor_sense");
 
         cursor.anchoredPosition += delta;
         ClampCursor();
