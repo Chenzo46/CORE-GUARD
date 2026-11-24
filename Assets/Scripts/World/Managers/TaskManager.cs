@@ -14,14 +14,13 @@ public class TaskManager : MonoBehaviour
     [SerializeField] private float minAlpha = 120f;
     [SerializeField] private float minScale = 0.2f;
 
-    private void Awake()
+    private bool taskStarted = false;
+    
+    void Start()
     {
         currentTask.InitializeTask();
-    }
-
-    private void Start()
-    {
         GameStateManager.Singleton.OnTimerDepleted += FailCurrentStep;
+        GameStateManager.Singleton.OnTimerStarted += () => { cursorImage.alpha = 1; taskStarted = true; };
         objectiveCursor = GUIManager.Singleton.GetObjectiveCursor();
         cursorImage = objectiveCursor.GetComponent<CanvasGroup>();
     }
@@ -36,7 +35,7 @@ public class TaskManager : MonoBehaviour
         // Scale with distance between camera and objective (Size and Opacity)
         // Only show on first step of task
 
-        if(currentTask.GetStepIndex() < 1)
+        if(currentTask.GetStepIndex() < 1 && taskStarted)
         {
 
             // size + alpha
@@ -146,6 +145,7 @@ public class Task
         {
             Debug.Log("Task Complete!");
             GameStateManager.Singleton.StopTimer();
+            SceneSetter.Singleton.WinGame();
         }
         else
         {

@@ -2852,7 +2852,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 572588429600412581}
+      - m_Target: {fileID: 5253783965686054878}
         m_TargetAssemblyTypeName: CoolantSynthesizer, Assembly-CSharp
         m_MethodName: FinalizeCoolant
         m_Mode: 1
@@ -3125,9 +3125,6 @@ GameObject:
   - component: {fileID: 1046818262047077987}
   - component: {fileID: 8828363089251149871}
   - component: {fileID: 5481090316620701525}
-  - component: {fileID: 572588429600412581}
-  - component: {fileID: 6195064998588157718}
-  - component: {fileID: 1141821959247180448}
   m_Layer: 5
   m_Name: CoolantSynthCanvas
   m_TagString: Untagged
@@ -3224,79 +3221,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &572588429600412581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5604478286725678503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91440ffed5f08b54585745024b5351d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CoolantSynthesizer
-  _monitorScreen: {fileID: 161880598052300605}
-  coolantResultant: {fileID: 5863533017967753456}
-  resultSizeMultipler: 1.2
-  materialButtons:
-  - {fileID: 159388451435384942}
-  - {fileID: 4066195412918715867}
-  - {fileID: 1253217177854098210}
-  materialIconPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  recipeLabels:
-  - {fileID: 1483750862136548489}
-  - {fileID: 7740537073403552158}
-  - {fileID: 7178275082345843992}
-  recipeAsList: 0000000000000000010000000200000002000000
-  BootScreen: {fileID: 4237743072854000216}
-  SynthScreen: {fileID: 1058849267790938250}
-  CompleteScreen: {fileID: 1265866087480187770}
-  PopupScreen: {fileID: 1698624968169262854}
-  PopupWindow: {fileID: 3522509846920450791}
-  BlueScreen: {fileID: 6375178931128898917}
-  closePopButton: {fileID: 9149353740808874522}
-  acceptPopButton: {fileID: 8227311432560904494}
-  loadingSlider: {fileID: 2744496310724820689}
-  QuikBewtGroup: {fileID: 7435140133755312989}
-  bootCtx: {fileID: 3819061931131446486}
-  _ipa: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  bootTime: 5
-  quikBootPopTime: 1
-  quikBootTimeWindow: 1
---- !u!114 &6195064998588157718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5604478286725678503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1195722badfbc324c84a8f484af2e680, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CoolantTask
-  _cs: {fileID: 572588429600412581}
---- !u!114 &1141821959247180448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5604478286725678503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c29fb64fdc54c5428d225485c794460, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TaskStepAbstract
-  taskDescription: Synthesize new coolant
-  isComplete: 0
-  unordered: 0
-  Listener: {fileID: 0}
-  checkFunctionality: {fileID: 6195064998588157718}
 --- !u!1 &5636235033066181719
 GameObject:
   m_ObjectHideFlags: 0
@@ -4269,6 +4193,9 @@ GameObject:
   - component: {fileID: 7670791322507417119}
   - component: {fileID: 8360418110079029275}
   - component: {fileID: 161880598052300605}
+  - component: {fileID: 5253783965686054878}
+  - component: {fileID: 302245608729997302}
+  - component: {fileID: 2209245349232688692}
   m_Layer: 8
   m_Name: Monitor Screen
   m_TagString: Untagged
@@ -4407,6 +4334,79 @@ MonoBehaviour:
   gamepadSensitivityScale: 2000
   hitboxScale: 0.5
   samplesPerAxis: 3
+--- !u!114 &5253783965686054878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345707861260751195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91440ffed5f08b54585745024b5351d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoolantSynthesizer
+  _monitorScreen: {fileID: 161880598052300605}
+  coolantResultant: {fileID: 5863533017967753456}
+  resultSizeMultipler: 1.2
+  materialButtons:
+  - {fileID: 159388451435384942}
+  - {fileID: 4066195412918715867}
+  - {fileID: 1253217177854098210}
+  materialIconPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  recipeLabels:
+  - {fileID: 1483750862136548489}
+  - {fileID: 7740537073403552158}
+  - {fileID: 7178275082345843992}
+  recipeAsList: 0000000000000000010000000200000002000000
+  BootScreen: {fileID: 4237743072854000216}
+  SynthScreen: {fileID: 1058849267790938250}
+  CompleteScreen: {fileID: 1265866087480187770}
+  PopupScreen: {fileID: 1698624968169262854}
+  PopupWindow: {fileID: 3522509846920450791}
+  BlueScreen: {fileID: 6375178931128898917}
+  closePopButton: {fileID: 9149353740808874522}
+  acceptPopButton: {fileID: 8227311432560904494}
+  loadingSlider: {fileID: 2744496310724820689}
+  QuikBewtGroup: {fileID: 7435140133755312989}
+  bootCtx: {fileID: 3819061931131446486}
+  _ipa: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  bootTime: 5
+  quikBootPopTime: 1
+  quikBootTimeWindow: 1
+--- !u!114 &302245608729997302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345707861260751195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1195722badfbc324c84a8f484af2e680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoolantTask
+  _cs: {fileID: 5253783965686054878}
+--- !u!114 &2209245349232688692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345707861260751195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c29fb64fdc54c5428d225485c794460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskStepAbstract
+  taskDescription: Synthesize new coolant
+  isComplete: 0
+  unordered: 0
+  Listener: {fileID: 0}
+  checkFunctionality: {fileID: 302245608729997302}
 --- !u!1 &7558946634429800320
 GameObject:
   m_ObjectHideFlags: 0

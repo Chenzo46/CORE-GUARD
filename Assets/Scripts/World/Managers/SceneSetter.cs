@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,9 @@ public class SceneSetter : MonoBehaviour
     [SerializeField] private Transform plrSpawn;
 
     [SerializeField] private Transform elevatorDoorLeft, elevatorDoorRight;
+    [SerializeField] private string nextLevel = "COOLANT_LVL_1";
+
+    private int day = 0;
 
     public static SceneSetter Singleton;
 
@@ -22,12 +26,29 @@ public class SceneSetter : MonoBehaviour
         StartCoroutine(ElevatorScene());
     }
 
+    private void SetDay()
+    {
+        try
+        {
+            day = int.Parse(SceneManager.GetActiveScene().name.Split('_')[2]);
+        }
+        catch
+        {
+            day = 0;
+        }
+
+
+        GUIManager.Singleton.SetDayText(day);
+    }
+
     private IEnumerator ElevatorScene()
     {
         plr.transform.position = plrSpawn.position;
         plr.transform.rotation = plrSpawn.rotation;
         plr.SetupCamera();
         GUIManager.Singleton.FadeSceneIn(3f);
+        GUIManager.Singleton.ShowTaskGUI(false);
+        SetDay();
         plr.ToggleInput(false);
 
         yield return null;
@@ -40,17 +61,12 @@ public class SceneSetter : MonoBehaviour
 
         AudioManager.Singleton.PlaySound("elevator-ding");
 
+        GUIManager.Singleton.FadeDayText(1f);
+
         plr.ToggleInput(true);
 
         elevatorDoorLeft.DOLocalMoveZ(0.8f, 1f).SetEase(Ease.InOutQuart);
         elevatorDoorRight.DOLocalMoveZ(-0.8f, 1f).SetEase(Ease.InOutQuart);
-
-        // fade screen from white
-        // Persistent Camera Shake
-        // Elevator music + elevator moving sound
-        // Wait 2 seconds
-        // Elevator stop sound
-        // Elevator door opens
 
         yield return null;
     }
@@ -79,8 +95,25 @@ public class SceneSetter : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void WinGame()
+    {
+        StartCoroutine(WinScene());
+    }
+
+    private IEnumerator WinScene()
+    {
+        GUIManager.Singleton.FadeSceneOut(3f);
+
+        plr.ToggleInput(false);
+
+        yield return new WaitForSeconds(3f);
+
+        SceneManager.LoadScene(nextLevel);
+    }
+
     public void StartSceneTimer()
     {
         GameStateManager.Singleton.StartTimer();
+        GUIManager.Singleton.ShowTaskGUI(true);
     }
 }

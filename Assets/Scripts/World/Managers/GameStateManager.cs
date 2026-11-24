@@ -14,6 +14,7 @@ public class GameStateManager : MonoBehaviour
     private float initalTimer = 0f;
 
     public Action OnTimerDepleted;
+    public Action OnTimerStarted;
 
     private Coroutine TimerRoutineRef;
 
@@ -41,6 +42,8 @@ public class GameStateManager : MonoBehaviour
     {
         if (timerStarted)
             return;
+
+        OnTimerStarted?.Invoke();
         
         TimerRoutineRef = StartCoroutine(TimerRoutine());
     }

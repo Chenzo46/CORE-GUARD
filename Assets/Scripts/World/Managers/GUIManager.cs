@@ -1,13 +1,15 @@
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text interactCtxLabel, timerLabel;
-    [SerializeField] private CanvasGroup baseHUDGroup;
+    [SerializeField] private CanvasGroup baseHUDGroup, taskGUIGroup;
     [SerializeField] private CanvasGroup monitorHUDGroup;
     [SerializeField] private CanvasGroup transitionGroup;
+    [SerializeField] private CanvasGroup dayHUDGroup;
     [Header("Task Manager Properties")]
     [SerializeField] private CanvasGroup taskViewGroup;
     [SerializeField] private TMP_Text taskTitleLabel;
@@ -43,14 +45,19 @@ public class GUIManager : MonoBehaviour
 
     public void SwitchToMonitorHUD()
     {
-        ShowCanvasGroup(currentGroup, false);
+        ShowCanvasGroup(baseHUDGroup, false);
         ShowCanvasGroup(monitorHUDGroup, true);
     }
 
     public void SwitchToBaseHUD()
     {
-        ShowCanvasGroup(currentGroup, false);
+        ShowCanvasGroup(monitorHUDGroup, false);
         ShowCanvasGroup(baseHUDGroup, true);
+    }
+
+    public void ShowTaskGUI(bool show)
+    {
+        ShowCanvasGroupOverlap(taskGUIGroup, show);
     }
 
     public void ShowCanvasGroup(CanvasGroup cg, bool show)
@@ -70,6 +77,7 @@ public class GUIManager : MonoBehaviour
         cg.interactable = show;
     }
 
+
     public static void FadeCanvasGroup(CanvasGroup cg, float finalAlpha, float duration)
     {
         DOTween.To(x => cg.alpha = x, cg.alpha, finalAlpha, duration).OnComplete(() =>
@@ -77,6 +85,16 @@ public class GUIManager : MonoBehaviour
             cg.blocksRaycasts = finalAlpha != 0f;
             cg.interactable = finalAlpha != 0f;
         });
+    }
+
+    public void FadeDayText(float duration)
+    {
+        FadeCanvasGroup(dayHUDGroup, 0f, duration);
+    }
+
+    public void SetDayText(int day)
+    {
+        dayHUDGroup.transform.GetChild(0).GetComponent<TMP_Text>().SetText($"DAY {day}");
     }
 
     public void SetTimer(float time)
