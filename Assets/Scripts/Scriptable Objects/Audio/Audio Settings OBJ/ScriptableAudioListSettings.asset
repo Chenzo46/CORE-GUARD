@@ -61,6 +61,8 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 795e5733319d86b42b2de64e13665447, type: 3}
   - audioName: elevator-ding
     audioClip: {fileID: 8300000, guid: bdc777e4281019143b8dc2af417073c9, type: 3}
+  - audioName: correct-pressure
+    audioClip: {fileID: 8300000, guid: 8e7ea346d286da94aa17f115267bac18, type: 3}
   mixerGroupList:
   - mixerGroupName: Master
     mixerGroup: {fileID: 24300002, guid: 7df5856ebde88224c843ba8fd3d7523c, type: 2}

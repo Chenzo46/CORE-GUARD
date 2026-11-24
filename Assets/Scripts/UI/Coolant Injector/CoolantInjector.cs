@@ -18,6 +18,8 @@ public class CoolantInjector : MonoBehaviour
 
     private int pIdx = 0;
 
+    private bool idealSoundPlayed = false;
+
     private void Awake()
     {
         CoolantInjectButton.onClick.AddListener(InjectCoolant);
@@ -38,9 +40,10 @@ public class CoolantInjector : MonoBehaviour
             pressureIndicator[idx].alpha = idx <= currentIdx ? 1 : 0;
         }
 
-        if (pIdx != currentIdx)
+        if (pIdx != currentIdx && currentIdx != idealPressureIndex)
         {
             AudioManager.Singleton.PlaySoundWorldPitchRamp("inject-status", transform.position, 1 + currentIdx * 0.15f);
+            idealSoundPlayed = false;
         }
 
 
@@ -61,6 +64,12 @@ public class CoolantInjector : MonoBehaviour
             _pressureIndicator.text = "PRESSURE\nIDEAL";
             _pressureIndicator.color = Color.green;
             CoolantInjectButton.interactable = true;
+
+            if (!idealSoundPlayed)
+            {
+                AudioManager.Singleton.PlaySoundWorld("correct-pressure", transform.position);
+                idealSoundPlayed = true;
+            }
         }
 
         pIdx = currentIdx;
