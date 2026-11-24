@@ -143,8 +143,6 @@ public class Task
 
         stepIndex++;
 
-        GUIManager.Singleton.UpdateTaskView(this);
-
         if (stepIndex >= steps.Count)
         {
             Debug.Log("Task Complete!");
@@ -153,6 +151,7 @@ public class Task
         }
         else
         {
+            GUIManager.Singleton.UpdateTaskView(this);
             Debug.Log($"Step {stepIndex} Complete! Moving to next step.");
             InitializeTaskStep();
         }
@@ -160,6 +159,8 @@ public class Task
 
     private void HandleStepFail()
     {
+        GameStateManager.Singleton.StopTimer();
+        SceneSetter.Singleton.ForceFadeOutMusic();
         SceneSetter.Singleton.LoseGame();
     }
 

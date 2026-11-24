@@ -6,7 +6,7 @@ public class ScriptableTutorial : ScriptableObject
 {
     public List<TutorialNode> tutorials = new List<TutorialNode>();
 
-    public TutorialNode GetTutorialNode(string tKey)
+    public TutorialNode? GetTutorialNode(string tKey)
     {
         foreach(TutorialNode tn in tutorials)
         {
@@ -42,13 +42,12 @@ public class ScriptableTutorial : ScriptableObject
 }
 
 [System.Serializable]
-public class TutorialNode 
+public struct TutorialNode 
 {
     public string tutorialInput; // e.g. W A S D
     public string tutorialDescription; // e.g. to walk
     public string tutorialKey; // simple word for quick lookup
     public string tutorialInputMap; // e.g. Movement, Monitor, UI....
-    public TutorialActionType tutorialActionType;
     public bool isComplete;
 }
 

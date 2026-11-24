@@ -18,6 +18,8 @@ public class CoolantSynthesizer : MonoBehaviour
     [SerializeField] private TMP_Text[] recipeLabels = new TMP_Text[3];
     [SerializeField] private List<CoolantMaterialType> recipeAsList = new List<CoolantMaterialType>();
 
+    [SerializeField] private List<Color> materialColors = new List<Color>();
+
     [Header("Screen Canvas Groups")]
 
     [SerializeField] private CanvasGroup BootScreen;
@@ -51,6 +53,8 @@ public class CoolantSynthesizer : MonoBehaviour
 
     private CoolantStatus coolantStatus = CoolantStatus.Incomplete;
 
+    int totalAdded = 0;
+
     private enum CoolantMaterialType
     {
         Water,
@@ -72,6 +76,10 @@ public class CoolantSynthesizer : MonoBehaviour
 
         monitorActionMap = _ipa.FindActionMap("Monitor");
         quickBootAction = monitorActionMap.FindAction("Quick Boot");
+
+        materialInputs.Add(CoolantMaterialType.Water, 0);
+        materialInputs.Add(CoolantMaterialType.Fire, 0);
+        materialInputs.Add(CoolantMaterialType.Ice, 0);
     }
 
     private void OnEnable()
@@ -111,7 +119,8 @@ public class CoolantSynthesizer : MonoBehaviour
         }
 
         // Send Visual
-        SendCoolantVisual();
+        totalAdded++;
+        SendCoolantVisual((int)type);
 
     }
     /*
@@ -158,11 +167,51 @@ public class CoolantSynthesizer : MonoBehaviour
         }
     }
 
-    private void SendCoolantVisual()
+    private void SendCoolantVisual(int type)
     {
         Sequence addToResult = DOTween.Sequence();
 
-        addToResult.Append(coolantResultant.DOScale(coolantResultant.localScale * resultSizeMultipler, 0.33f).SetEase(Ease.OutBounce));
+        if (totalAdded < 12)
+            addToResult.Append(coolantResultant.DOScale(coolantResultant.localScale * resultSizeMultipler, 0.33f).SetEase(Ease.OutBounce));
+
+        RectTransform rt = Instantiate(materialIconPrefabs[type], SynthScreen.transform).GetComponent<RectTransform>();
+
+        rt.anchoredPosition = materialButtons[type].GetComponent<RectTransform>().anchoredPosition;
+
+
+        addToResult.Join(rt.DOAnchorPos(coolantResultant.anchoredPosition, 0.3f));
+        addToResult.Join(rt.DOScale(0f, 0.3f).OnComplete(() => { Destroy(rt.gameObject); }));
+
+        coolantResultant.GetComponent<Image>().DOColor(GetAverageMaterialInputColor(), 0.3f);
+    }
+
+
+    private Color GetAverageMaterialInputColor()
+    {
+        float r = 0, g = 0, b = 0;
+
+        int idx = 0;
+        int total = 0;
+        foreach (CoolantMaterialType cmt in materialInputs.Keys)
+        {
+            int tIdx = idx;
+
+            Color cColor = materialColors[tIdx];
+
+            r += cColor.r * materialInputs[cmt];
+            g += cColor.g * materialInputs[cmt];
+            b += cColor.b * materialInputs[cmt];
+
+            total += materialInputs[cmt];
+
+            idx++;
+        }
+
+        r /= total;
+        g /= total;
+        b /= total;
+
+        return new Color(r, g, b, 255f);
     }
 
     private void BeginLoading()

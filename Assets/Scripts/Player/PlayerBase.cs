@@ -318,12 +318,11 @@ public class PlayerBase : MonoBehaviour
     {
         if (inputAllowed)
         {
-            moveActionMap.Enable();
+            playerActionMap.Enable();
         }
         else
         {
-            moveActionMap.Disable();
-            monitorActionMap.Disable();
+            playerActionMap.Disable();
         }
     }
 

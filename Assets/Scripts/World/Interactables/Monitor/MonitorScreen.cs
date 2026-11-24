@@ -59,6 +59,8 @@ public class MonitorScreen : Interactable
     public Action OnMonitorExit;
     public Action OnMonitorAwake;
 
+    private InputActionMap uiMap;
+
     
 
     public override void Awake()
@@ -106,6 +108,7 @@ public class MonitorScreen : Interactable
         leaveAction = monitorActionMap.FindAction("Leave");
 
         monitorActionMap.Disable();
+        uiMap = _ipa.FindActionMap("UI");
     }
 
     public override void InteractFunction(PlayerBase sender)
@@ -124,6 +127,7 @@ public class MonitorScreen : Interactable
     {
         movementActionMap.Disable();
         monitorActionMap.Enable();
+        uiMap.Disable();
         GUIManager.Singleton.SwitchToMonitorHUD();
         cursor.gameObject.SetActive(true);
 
@@ -158,6 +162,7 @@ public class MonitorScreen : Interactable
             {
                 movementActionMap.Enable();
                 monitorActionMap.Disable();
+                uiMap.Enable();
                 cursor.anchoredPosition = Vector2.zero;
                 // tween main camera back to player
                 isFoucsed = false;

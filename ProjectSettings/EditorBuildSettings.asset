@@ -24,8 +24,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Coolant Levels/COOLANT_LVL_5.unity
     guid: 94bd2ac203c20664ab861d5cca49e9ab
   - enabled: 1
-    path: Assets/Scenes/PlayerControlSample.unity
-    guid: 4e77aa2d762077a42b4eb9f68ff06349
+    path: Assets/Scenes/End Menu.unity
+    guid: e5882ce2f12cb694db09e43fc67fef25
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

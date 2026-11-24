@@ -13,7 +13,7 @@ public class GUIManager : MonoBehaviour
     [Header("Task Manager Properties")]
     [SerializeField] private CanvasGroup taskViewGroup;
     [SerializeField] private TMP_Text taskTitleLabel;
-    [SerializeField] private TMP_Text taskStepDetailLabel;
+    [SerializeField] private TMP_Text taskStepDetailLabel, taskStepHeaderLabel;
     [SerializeField] private RectTransform objectiveCursor;
     [SerializeField] private float CursorRotSpeed = 1f;
     [Header("Tutorial Properties")]
@@ -90,6 +90,15 @@ public class GUIManager : MonoBehaviour
         });
     }
 
+    public static void FadeCanvasGroupUnscaledTime(CanvasGroup cg, float finalAlpha, float duration)
+    {
+        DOTween.To(x => cg.alpha = x, cg.alpha, finalAlpha, duration).SetUpdate(true).OnComplete(() =>
+        {
+            cg.blocksRaycasts = finalAlpha != 0f;
+            cg.interactable = finalAlpha != 0f;
+        });
+    }
+
     public void FadeDayText(float duration)
     {
         FadeCanvasGroup(dayHUDGroup, 0f, duration);
@@ -110,19 +119,12 @@ public class GUIManager : MonoBehaviour
 
     public void UpdateTaskView(Task tm)
     {
+
         taskTitleLabel.text = tm.taskName;
 
-        string steps = ""; // only add current and old tasks
+        taskStepHeaderLabel.text = $"Step {tm.GetStepIndex() + 1} / {tm.steps.Count}:";
 
-        for(int idx = 0; idx < tm.GetStepIndex()+1; idx++)
-        {
-            if (idx >= tm.steps.Count)
-                break;
-
-            steps += $"- {tm.steps[idx].GetDescription()}\n";
-        }
-
-        taskStepDetailLabel.text = steps;
+        taskStepDetailLabel.text = tm.currentStep.GetDescription();
     }
 
     public void FadeSceneIn(float duration)

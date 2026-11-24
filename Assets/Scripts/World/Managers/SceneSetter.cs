@@ -12,7 +12,11 @@ public class SceneSetter : MonoBehaviour
 
     [SerializeField] private Transform elevatorDoorLeft, elevatorDoorRight;
     [SerializeField] private string nextLevel = "COOLANT_LVL_1";
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioClip endKey1, endKey2;
     [SerializeField] private UnityEvent OnPlayerReady;
+
+    //13.33f
 
     private int day = 0;
 
@@ -57,11 +61,11 @@ public class SceneSetter : MonoBehaviour
         
         plr.ShakeCamera(3f, 0.1f, false);
 
-        AudioManager.Singleton.PlaySound("elevator-stop", 0.3f);
+        AudioManager.Singleton.PlaySoundWorld("elevator-stop", plrSpawn.position, 0.3f);
 
         yield return new WaitForSeconds(3f);
 
-        AudioManager.Singleton.PlaySound("elevator-ding");
+        AudioManager.Singleton.PlaySoundWorld("elevator-ding", plrSpawn.position);
 
         GUIManager.Singleton.FadeDayText(1f);
 
@@ -107,6 +111,8 @@ public class SceneSetter : MonoBehaviour
     {
         GUIManager.Singleton.FadeSceneOut(3f);
 
+        WinJingle();
+
         plr.ToggleInput(false);
 
         yield return new WaitForSeconds(3f);
@@ -114,9 +120,32 @@ public class SceneSetter : MonoBehaviour
         SceneManager.LoadScene(nextLevel);
     }
 
+    private void WinJingle()
+    {
+        if(musicSource.time < 13.33f)
+        {
+            musicSource.Pause();
+            musicSource.clip = endKey1;
+        }
+        else
+        {
+            musicSource.Pause();
+            musicSource.clip = endKey2;
+        }
+
+        musicSource.Play();
+    }
+
     public void StartSceneTimer()
     {
         GameStateManager.Singleton.StartTimer();
+        if(musicSource != null)
+            musicSource.Play();
         GUIManager.Singleton.ShowTaskGUI(true);
+    }
+
+    public void ForceFadeOutMusic()
+    {
+        musicSource.DOFade(0f, 2.9f);
     }
 }

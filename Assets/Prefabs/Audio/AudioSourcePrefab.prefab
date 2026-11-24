@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2351552491046842770}
   - component: {fileID: 6906735549906959641}
+  - component: {fileID: 7904755922509328377}
   m_Layer: 0
   m_Name: AudioSourcePrefab
   m_TagString: Untagged
@@ -129,3 +130,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7904755922509328377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067767436131756787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450ef28eb260d164886bb099bd1c06f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioSourceTimeSync

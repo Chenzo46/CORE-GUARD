@@ -54,7 +54,7 @@ public class TutorialTriggerZone : MonoBehaviour
     {
         string tKey = ctx.action.name;
 
-        TutorialNode tn = tutorials.GetTutorialNode(tKey);
+        TutorialNode tn = (TutorialNode)tutorials.GetTutorialNode(tKey);
         CanvasGroup cg = tutorialGroups[tutorials.GetTutorialNodeIndex(tn)];
 
         DOTween.To(x => cg.alpha = x, 1f, 0f, 1f).OnComplete(() =>
