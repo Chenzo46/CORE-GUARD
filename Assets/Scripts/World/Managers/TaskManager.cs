@@ -9,6 +9,7 @@ public class TaskManager : MonoBehaviour
     public Task currentTask;
     private RectTransform objectiveCursor;
     private CanvasGroup cursorImage;
+    [SerializeField] private bool cursorActiveOnAllSteps = false;
 
     [SerializeField] private float cursorAdjustMaxDistance = 10f;
     [SerializeField] private float minAlpha = 120f;
@@ -35,8 +36,11 @@ public class TaskManager : MonoBehaviour
         // Scale with distance between camera and objective (Size and Opacity)
         // Only show on first step of task
 
-        if(currentTask.GetStepIndex() < 1 && taskStarted)
+
+        if((currentTask.GetStepIndex() < 1 || cursorActiveOnAllSteps) && taskStarted)
         {
+            if (currentTask.GetStepIndex() >= currentTask.steps.Count)
+                return;
 
             // size + alpha
             float distFromObjective = Vector3.Distance(Camera.main.transform.position, currentTask.currentStep.transform.position);

@@ -1,6 +1,6 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GUIManager : MonoBehaviour
@@ -16,6 +16,9 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private TMP_Text taskStepDetailLabel;
     [SerializeField] private RectTransform objectiveCursor;
     [SerializeField] private float CursorRotSpeed = 1f;
+    [Header("Tutorial Properties")]
+    [SerializeField] private GameObject tutorialNodePrefab;
+    [SerializeField] private RectTransform tutorialNodeParent;
 
     public static GUIManager Singleton;
     private CanvasGroup currentGroup;
@@ -131,6 +134,26 @@ public class GUIManager : MonoBehaviour
     public void FadeSceneOut(float duration)
     {
         FadeCanvasGroup(transitionGroup, 1f, duration);
+    }
+
+    public List<CanvasGroup> GenerateTutorialVisuals(List<TutorialNode> tns)
+    {
+        List<CanvasGroup> cgs = new List<CanvasGroup>();
+        foreach(TutorialNode tn in tns)
+        {
+            if (tn.isComplete)
+                continue;
+
+            CanvasGroup cg = Instantiate(tutorialNodePrefab, tutorialNodeParent).GetComponent<CanvasGroup>();
+
+            // set tutorial text here
+            cg.transform.GetChild(0).GetComponent<TMP_Text>().SetText(tn.tutorialInput);
+            cg.transform.GetChild(1).GetComponent<TMP_Text>().SetText(tn.tutorialDescription);
+
+            cgs.Add(cg);
+        }
+
+        return cgs;
     }
 
     public RectTransform GetObjectiveCursor()

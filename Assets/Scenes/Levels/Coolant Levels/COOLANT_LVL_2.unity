@@ -1072,6 +1072,7 @@ MonoBehaviour:
     steps:
     - {fileID: 128935094}
     - {fileID: 1626717149}
+  cursorActiveOnAllSteps: 0
   cursorAdjustMaxDistance: 10
   minAlpha: 120
   minScale: 0.2
@@ -2138,6 +2139,17 @@ Transform:
   - {fileID: 1212051416}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &506857990 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+  m_PrefabInstance: {fileID: 1152141706}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27cfbc79e0eee6e458f9056f1ec32431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialTriggerZone
 --- !u!1 &523600264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3740,6 +3752,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a70673ab2f64fe4438be463ede43dfde, type: 3}
+--- !u!1001 &1152141706
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.891902
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.597
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: tutorials
+      value: 
+      objectReference: {fileID: 11400000, guid: 7af61869e94843849b7bd76edff9bfbd, type: 2}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: useOutsideTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909543509940397665, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_Name
+      value: TutoiralTriggerZone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
 --- !u!1 &1164583600
 GameObject:
   m_ObjectHideFlags: 0
@@ -6385,6 +6462,7 @@ MonoBehaviour:
     steps:
     - {fileID: 558496076}
     - {fileID: 7936576108227046123}
+  cursorActiveOnAllSteps: 0
   cursorAdjustMaxDistance: 10
   minAlpha: 0
   minScale: 0.5
@@ -8891,6 +8969,34 @@ PrefabInstance:
       propertyPath: IsMonitorAwake
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 506857990}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendTutorialSteps
+      objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialTriggerZone, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 161880598052300605, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
+      propertyPath: OnInteractCompleteUnity.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 971119553927210720, guid: 1dc00ab7e5192f54e9c9bc3b8f6b5833, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10315,3 +10421,4 @@ SceneRoots:
   - {fileID: 1151760450}
   - {fileID: 2131894526}
   - {fileID: 2758472572473422224}
+  - {fileID: 1152141706}

@@ -1072,6 +1072,7 @@ MonoBehaviour:
     steps:
     - {fileID: 128935094}
     - {fileID: 1626717149}
+  cursorActiveOnAllSteps: 0
   cursorAdjustMaxDistance: 10
   minAlpha: 120
   minScale: 0.2
@@ -4368,6 +4369,79 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &1249191811
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.598
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -19.562
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460881688892966685, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: tutorials
+      value: 
+      objectReference: {fileID: 11400000, guid: 957dbd82e0b92b94295a6cb044964341, type: 2}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: tutorialBounds.x
+      value: 1.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: tutorialBounds.y
+      value: 1.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707213848436176171, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: tutorialBounds.z
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909543509940397665, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
+      propertyPath: m_Name
+      value: TutoiralTriggerZone (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 021dd9ca025c85841983a943c78bb9f3, type: 3}
 --- !u!64 &1271939250
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6363,6 +6437,7 @@ MonoBehaviour:
     steps:
     - {fileID: 558496076}
     - {fileID: 7936576108227046123}
+  cursorActiveOnAllSteps: 0
   cursorAdjustMaxDistance: 10
   minAlpha: 0
   minScale: 0.5
@@ -10179,3 +10254,4 @@ SceneRoots:
   - {fileID: 1151760450}
   - {fileID: 2131894526}
   - {fileID: 2758472572473422224}
+  - {fileID: 1249191811}

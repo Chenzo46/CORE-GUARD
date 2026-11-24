@@ -2,6 +2,7 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class SceneSetter : MonoBehaviour
@@ -11,6 +12,7 @@ public class SceneSetter : MonoBehaviour
 
     [SerializeField] private Transform elevatorDoorLeft, elevatorDoorRight;
     [SerializeField] private string nextLevel = "COOLANT_LVL_1";
+    [SerializeField] private UnityEvent OnPlayerReady;
 
     private int day = 0;
 
@@ -64,6 +66,7 @@ public class SceneSetter : MonoBehaviour
         GUIManager.Singleton.FadeDayText(1f);
 
         plr.ToggleInput(true);
+        OnPlayerReady?.Invoke();
 
         elevatorDoorLeft.DOLocalMoveZ(0.8f, 1f).SetEase(Ease.InOutQuart);
         elevatorDoorRight.DOLocalMoveZ(-0.8f, 1f).SetEase(Ease.InOutQuart);
